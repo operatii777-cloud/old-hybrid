@@ -1,6 +1,7 @@
 node_modules/
 dist/
 build/
+coverage/
 *.log
 .DS_Store
 .env
@@ -8,3 +9,4 @@ build/
 .idea/
 *.tmp
 tmp/
+package-lock.json
