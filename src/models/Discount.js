@@ -1,4 +1,5 @@
 const Validator = require('../utils/Validator');
+const { ValidationError } = require('../utils/Errors');
 
 /**
  * Discount types
