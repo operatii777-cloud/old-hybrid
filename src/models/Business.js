@@ -24,7 +24,7 @@ class Business {
   }
 
   _generateId() {
-    return 'BIZ-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    return 'BIZ-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11);
   }
 
   addMenuItem(item) {
