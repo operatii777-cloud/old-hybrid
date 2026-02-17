@@ -1,13 +1,15 @@
+const Validator = require('../utils/Validator');
+
 /**
  * MenuItem model representing a food or beverage item
  */
 class MenuItem {
   constructor(name, description, price, category) {
     this.id = this._generateId();
-    this.name = name;
-    this.description = description;
-    this.price = price;
-    this.category = category; // appetizer, main, dessert, beverage, etc.
+    this.name = Validator.validateMenuItemName(name);
+    this.description = Validator.validateDescription(description);
+    this.price = Validator.validatePrice(price, 'Price');
+    this.category = Validator.validateNonEmptyString(category, 'Category');
     this.available = true;
     this.createdAt = new Date();
   }
@@ -21,7 +23,7 @@ class MenuItem {
   }
 
   updatePrice(newPrice) {
-    this.price = newPrice;
+    this.price = Validator.validatePrice(newPrice, 'New price');
   }
 
   getInfo() {

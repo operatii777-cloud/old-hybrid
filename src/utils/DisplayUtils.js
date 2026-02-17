@@ -62,8 +62,9 @@ class DisplayUtils {
     }
 
     orders.forEach(order => {
+      const paidStatus = order.paid ? '💳 PAID' : '⏳ UNPAID';
       console.log(`  Order #${order.id}`);
-      console.log(`  Table: ${order.tableNumber} | Status: ${order.status.toUpperCase()}`);
+      console.log(`  Table: ${order.tableNumber} | Status: ${order.status.toUpperCase()} | ${paidStatus}`);
       console.log(`  Items: ${order.itemCount} | Total: ${order.total} RON`);
       console.log(`  Created: ${order.createdAt.toLocaleString()}`);
       console.log('  ─────────────────────────────────────────────────────');
@@ -89,7 +90,26 @@ class DisplayUtils {
     });
     
     console.log('  ─────────────────────────────────────────────────────');
+    console.log(`  Subtotal: ${order.subtotal} RON`);
+    console.log(`  Tax (${order.taxRate}): ${order.taxAmount} RON`);
+    
+    if (order.discount) {
+      console.log(`  Discount (${order.discount.code}): -${order.discountAmount} RON`);
+    }
+    
     console.log(`  TOTAL: ${order.total} RON`);
+    
+    if (order.payment) {
+      console.log('\n  Payment Information:');
+      console.log('  ─────────────────────────────────────────────────────');
+      console.log(`  Method: ${order.payment.method.toUpperCase()}`);
+      console.log(`  Amount: ${order.payment.amount} RON`);
+      if (order.payment.payerName) {
+        console.log(`  Payer: ${order.payment.payerName}`);
+      }
+      console.log(`  Status: ${order.payment.status.toUpperCase()}`);
+    }
+    
     console.log('\n');
   }
 

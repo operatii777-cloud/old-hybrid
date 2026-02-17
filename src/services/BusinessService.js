@@ -2,6 +2,9 @@ const { Business, BusinessType } = require('../models/Business');
 const MenuItem = require('../models/MenuItem');
 const { Order, OrderStatus } = require('../models/Order');
 const Table = require('../models/Table');
+const { Payment, PaymentMethod } = require('../models/Payment');
+const { Discount, DiscountType } = require('../models/Discount');
+const { NotFoundError, BusinessError } = require('../utils/Errors');
 
 /**
  * BusinessService manages all operations for restaurants, cafes, and fast-food establishments
@@ -9,26 +12,31 @@ const Table = require('../models/Table');
 class BusinessService {
   constructor() {
     this.businesses = [];
+    this.discounts = []; // Global discounts
   }
 
   /**
    * Create a new business (restaurant, cafe, or fast-food)
    */
   createBusiness(name, type, address, phone) {
-    if (!Object.values(BusinessType).includes(type)) {
-      throw new Error('Invalid business type. Must be restaurant, cafe, or fastfood');
+    try {
+      const business = new Business(name, type, address, phone);
+      this.businesses.push(business);
+      return business;
+    } catch (error) {
+      throw error; // Re-throw validation errors
     }
-
-    const business = new Business(name, type, address, phone);
-    this.businesses.push(business);
-    return business;
   }
 
   /**
    * Get business by ID
    */
   getBusiness(businessId) {
-    return this.businesses.find(b => b.id === businessId);
+    const business = this.businesses.find(b => b.id === businessId);
+    if (!business) {
+      throw new NotFoundError(`Business with ID ${businessId} not found`);
+    }
+    return business;
   }
 
   /**
@@ -42,14 +50,14 @@ class BusinessService {
    * Add menu item to business
    */
   addMenuItem(businessId, name, description, price, category) {
-    const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
+    try {
+      const business = this.getBusiness(businessId);
+      const menuItem = new MenuItem(name, description, price, category);
+      business.addMenuItem(menuItem);
+      return menuItem;
+    } catch (error) {
+      throw error;
     }
-
-    const menuItem = new MenuItem(name, description, price, category);
-    business.addMenuItem(menuItem);
-    return menuItem;
   }
 
   /**
@@ -57,10 +65,6 @@ class BusinessService {
    */
   getMenu(businessId) {
     const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
-    }
-
     return business.menu.map(item => item.getInfo());
   }
 
@@ -68,14 +72,14 @@ class BusinessService {
    * Add table to business
    */
   addTable(businessId, tableNumber, capacity) {
-    const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
+    try {
+      const business = this.getBusiness(businessId);
+      const table = new Table(tableNumber, capacity);
+      business.addTable(table);
+      return table;
+    } catch (error) {
+      throw error;
     }
-
-    const table = new Table(tableNumber, capacity);
-    business.addTable(table);
-    return table;
   }
 
   /**
@@ -83,10 +87,6 @@ class BusinessService {
    */
   getTables(businessId) {
     const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
-    }
-
     return business.tables.map(table => table.getInfo());
   }
 
@@ -94,60 +94,65 @@ class BusinessService {
    * Create an order
    */
   createOrder(businessId, tableNumber, items) {
-    const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
-    }
+    try {
+      const business = this.getBusiness(businessId);
 
-    // Validate items exist in menu
-    const orderItems = items.map(item => {
-      const menuItem = business.menu.find(mi => mi.id === item.menuItemId);
-      if (!menuItem) {
-        throw new Error(`Menu item ${item.menuItemId} not found`);
+      // Validate items exist in menu
+      const orderItems = items.map(item => {
+        const menuItem = business.menu.find(mi => mi.id === item.menuItemId);
+        if (!menuItem) {
+          throw new NotFoundError(`Menu item ${item.menuItemId} not found`);
+        }
+        if (!menuItem.available) {
+          throw new BusinessError(`Menu item ${menuItem.name} is not available`);
+        }
+        return {
+          menuItem,
+          quantity: item.quantity
+        };
+      });
+
+      const order = new Order(tableNumber, orderItems);
+      business.addOrder(order);
+
+      // Update table status if table exists
+      const table = business.tables.find(t => t.number === tableNumber);
+      if (table) {
+        table.occupy(order);
       }
-      return {
-        menuItem,
-        quantity: item.quantity
-      };
-    });
 
-    const order = new Order(tableNumber, orderItems);
-    business.addOrder(order);
-
-    // Update table status if table exists
-    const table = business.tables.find(t => t.number === tableNumber);
-    if (table) {
-      table.occupy(order);
+      return order;
+    } catch (error) {
+      throw error;
     }
-
-    return order;
   }
 
   /**
    * Update order status
    */
   updateOrderStatus(businessId, orderId, newStatus) {
-    const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
-    }
+    try {
+      const business = this.getBusiness(businessId);
 
-    const order = business.orders.find(o => o.id === orderId);
-    if (!order) {
-      throw new Error('Order not found');
-    }
-
-    order.updateStatus(newStatus);
-
-    // If order is delivered or cancelled, vacate the table
-    if (newStatus === OrderStatus.DELIVERED || newStatus === OrderStatus.CANCELLED) {
-      const table = business.tables.find(t => t.number === order.tableNumber);
-      if (table && table.currentOrder && table.currentOrder.id === orderId) {
-        table.vacate();
+      const order = business.orders.find(o => o.id === orderId);
+      if (!order) {
+        throw new NotFoundError(`Order ${orderId} not found`);
       }
-    }
 
-    return order;
+      order.updateStatus(newStatus);
+
+      // If order is delivered or cancelled, vacate the table
+      if (newStatus === OrderStatus.DELIVERED || newStatus === OrderStatus.CANCELLED) {
+        const table = business.tables.find(t => t.number === order.tableNumber);
+        if (table && table.currentOrder && table.currentOrder.id === orderId) {
+          table.vacate();
+        }
+      }
+
+      return order;
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**
@@ -155,9 +160,6 @@ class BusinessService {
    */
   getOrders(businessId, status = null) {
     const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
-    }
 
     let orders = business.orders;
     if (status) {
@@ -172,13 +174,10 @@ class BusinessService {
    */
   getOrderDetails(businessId, orderId) {
     const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
-    }
 
     const order = business.orders.find(o => o.id === orderId);
     if (!order) {
-      throw new Error('Order not found');
+      throw new NotFoundError(`Order ${orderId} not found`);
     }
 
     return order.getDetailedInfo();
@@ -189,9 +188,6 @@ class BusinessService {
    */
   getStatistics(businessId) {
     const business = this.getBusiness(businessId);
-    if (!business) {
-      throw new Error('Business not found');
-    }
 
     const totalOrders = business.orders.length;
     const totalRevenue = business.orders
@@ -211,6 +207,80 @@ class BusinessService {
       occupiedTables: business.tables.filter(t => t.occupied).length,
       totalTables: business.tables.length
     };
+  }
+
+  /**
+   * Create a discount
+   */
+  createDiscount(code, type, value, description = '') {
+    try {
+      const discount = new Discount(code, type, value, description);
+      this.discounts.push(discount);
+      return discount;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Get discount by code
+   */
+  getDiscountByCode(code) {
+    const discount = this.discounts.find(d => d.code === code.toUpperCase() && d.active);
+    if (!discount) {
+      throw new NotFoundError(`Active discount with code ${code} not found`);
+    }
+    return discount;
+  }
+
+  /**
+   * Apply discount to order
+   */
+  applyDiscount(businessId, orderId, discountCode) {
+    try {
+      const business = this.getBusiness(businessId);
+      const order = business.orders.find(o => o.id === orderId);
+      if (!order) {
+        throw new NotFoundError(`Order ${orderId} not found`);
+      }
+
+      const discount = this.getDiscountByCode(discountCode);
+      order.applyDiscount(discount);
+      return order;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Process payment for an order
+   */
+  processPayment(businessId, orderId, amount, method, payerName = null) {
+    try {
+      const business = this.getBusiness(businessId);
+      const order = business.orders.find(o => o.id === orderId);
+      if (!order) {
+        throw new NotFoundError(`Order ${orderId} not found`);
+      }
+
+      const payment = new Payment(orderId, amount, method, payerName);
+      order.addPayment(payment);
+      
+      // Automatically mark order as delivered when paid
+      if (order.status === OrderStatus.READY) {
+        order.updateStatus(OrderStatus.DELIVERED);
+        
+        // Vacate table
+        const table = business.tables.find(t => t.number === order.tableNumber);
+        if (table && table.currentOrder && table.currentOrder.id === orderId) {
+          table.vacate();
+        }
+      }
+
+      return payment;
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

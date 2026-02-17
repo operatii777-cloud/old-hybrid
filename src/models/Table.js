@@ -1,11 +1,13 @@
+const Validator = require('../utils/Validator');
+
 /**
  * Table model representing a table in the establishment
  */
 class Table {
   constructor(number, capacity) {
     this.id = this._generateId();
-    this.number = number;
-    this.capacity = capacity;
+    this.number = Validator.validateTableNumber(number);
+    this.capacity = Validator.validateCapacity(capacity, 'Table capacity');
     this.occupied = false;
     this.currentOrder = null;
   }

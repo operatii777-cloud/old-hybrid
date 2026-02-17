@@ -1,6 +1,8 @@
 const BusinessService = require('./services/BusinessService');
 const { BusinessType } = require('./models/Business');
 const { OrderStatus } = require('./models/Order');
+const { PaymentMethod } = require('./models/Payment');
+const { DiscountType } = require('./models/Discount');
 const DisplayUtils = require('./utils/DisplayUtils');
 
 /**
@@ -110,14 +112,53 @@ DisplayUtils.displayOrders(allOrders);
 // Display detailed order information
 DisplayUtils.displayOrderDetails(businessService.getOrderDetails(restaurant.id, order1.id));
 
+// Create discounts
+console.log('Creating promotional discounts...\n');
+const discount1 = businessService.createDiscount('SAVE10', DiscountType.PERCENTAGE, 10, '10% off entire order');
+console.log(`✓ Created discount: ${discount1.code} - ${discount1.description}`);
+
+const discount2 = businessService.createDiscount('SUMMER25', DiscountType.FIXED, 25.00, '25 RON off');
+console.log(`✓ Created discount: ${discount2.code} - ${discount2.description}`);
+
+// Apply discount to order 2
+console.log('\nApplying discount to order...\n');
+businessService.applyDiscount(restaurant.id, order2.id, 'SAVE10');
+console.log(`✓ Discount applied to order ${order2.id}`);
+
+// Display updated order with discount
+DisplayUtils.displayOrderDetails(businessService.getOrderDetails(restaurant.id, order2.id));
+
 // Update order status
 console.log('Updating order status...\n');
 businessService.updateOrderStatus(restaurant.id, order1.id, OrderStatus.PREPARING);
 console.log(`✓ Order ${order1.id} is now PREPARING`);
 businessService.updateOrderStatus(restaurant.id, order1.id, OrderStatus.READY);
 console.log(`✓ Order ${order1.id} is now READY`);
-businessService.updateOrderStatus(restaurant.id, order1.id, OrderStatus.DELIVERED);
-console.log(`✓ Order ${order1.id} has been DELIVERED`);
+
+// Process payment for order 1
+console.log('\nProcessing payment...\n');
+const payment1 = businessService.processPayment(
+  restaurant.id,
+  order1.id,
+  200.00,
+  PaymentMethod.CARD,
+  'Ion Popescu'
+);
+console.log(`✓ Payment processed: ${payment1.amount} RON via ${payment1.method}`);
+
+// Display order after payment
+DisplayUtils.displayOrderDetails(businessService.getOrderDetails(restaurant.id, order1.id));
+
+// Process payment for order 2
+businessService.updateOrderStatus(restaurant.id, order2.id, OrderStatus.PREPARING);
+businessService.updateOrderStatus(restaurant.id, order2.id, OrderStatus.READY);
+const payment2 = businessService.processPayment(
+  restaurant.id,
+  order2.id,
+  300.00,
+  PaymentMethod.CASH
+);
+console.log(`✓ Payment processed for order ${order2.id}: ${payment2.amount} RON via ${payment2.method}\n`);
 
 // Display updated tables status
 console.log('\n');

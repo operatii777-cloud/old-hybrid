@@ -1,3 +1,6 @@
+const Validator = require('../utils/Validator');
+const { ValidationError } = require('../utils/Errors');
+
 /**
  * Enum for business types
  */
@@ -12,11 +15,17 @@ const BusinessType = {
  */
 class Business {
   constructor(name, type, address, phone) {
+    // Validate inputs
+    this.name = Validator.validateBusinessName(name);
+    this.type = Validator.validateEnum(
+      type,
+      Object.values(BusinessType),
+      'Business type'
+    );
+    this.address = Validator.validateNonEmptyString(address, 'Address');
+    this.phone = Validator.validatePhone(phone, 'Phone');
+    
     this.id = this._generateId();
-    this.name = name;
-    this.type = type; // restaurant, cafe, or fastfood
-    this.address = address;
-    this.phone = phone;
     this.menu = [];
     this.tables = [];
     this.orders = [];
@@ -32,6 +41,11 @@ class Business {
   }
 
   addTable(table) {
+    // Check for duplicate table numbers
+    const existingTable = this.tables.find(t => t.number === table.number);
+    if (existingTable) {
+      throw new ValidationError(`Table number ${table.number} already exists`);
+    }
     this.tables.push(table);
   }
 
