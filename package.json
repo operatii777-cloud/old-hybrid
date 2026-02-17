@@ -1,0 +1,21 @@
+{
+  "name": "old-hybrid-restaurant",
+  "version": "1.0.0",
+  "description": "Universal application for restaurants, cafes, and fast-food establishments",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "restaurant",
+    "cafe",
+    "fast-food",
+    "pos",
+    "management"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {}
+}
