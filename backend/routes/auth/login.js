@@ -26,14 +26,15 @@ router.post('/login', async (req, res) => {
 
     const mese = await db.all('SELECT * FROM mese');
 
-    logger.info(`Login success: ${ospatar.nume}`);
+    logger.info(`Login success: ${ospatar.nume} (${ospatar.rol || 'OSPATAR'})`);
 
     res.json({
       success: true,
       ospatar: {
         id: ospatar.id,
         nume: ospatar.nume,
-        pin: ospatar.pin
+        pin: ospatar.pin,
+        rol: ospatar.rol || 'OSPATAR'
       },
       mese: mese
     });

@@ -20,6 +20,8 @@ import observatiiRoutes from './admin/observatii.js';
 import promotiiRoutes from './admin/promotii.js';
 import utilizatoriRoutes from './admin/utilizatori.js';
 import parserRoutes from './admin/parser.js';
+import invoicesRoutes from './admin/invoices.js';
+import reservationsRoutes from './admin/reservations.js';
 
 export function setupRoutes(app) {
   // Auth
@@ -51,6 +53,8 @@ export function setupRoutes(app) {
   app.use('/api/observatii', observatiiRoutes);
   app.use('/api/promotii', promotiiRoutes);
   app.use('/api/utilizatori', utilizatoriRoutes);
+  app.use('/api/invoices', invoicesRoutes);
+  app.use('/api/reservations', reservationsRoutes);
 
   // Not found
   app.use('/api/*', (req, res) => {
