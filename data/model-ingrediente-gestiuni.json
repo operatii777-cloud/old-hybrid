@@ -1,0 +1,67 @@
+{
+  "bucatarie": {
+    "carne_peste": [
+      "Aripioare pui", "Pulpe pui", "Piept pui", "Pui", "Cotlet porc", "Cotlet vita", "Muschi vita",
+      "Carne tocata porc", "Carne tocata vita", "Rasol vita", "Carnati", "Mici", "Burta", "Ficat pui",
+      "Dorada", "Pastrav"
+    ],
+    "legume_verdeturi": [
+      "Cartofi", "Ceapa", "Ceapa alba", "Morcov", "Pastarnac", "Telina", "Ardei gras", "Rosii",
+      "Castraveti", "Castraveti murati", "Varza murata", "Vinete", "Dovlecel", "Conopida", "Ciuperci",
+      "Salata verde", "Mazare", "Usturoi", "Marar", "Patrunjel"
+    ],
+    "lactate_oua": [
+      "Branza", "Mozzarella", "Smantana", "Unt", "Ou"
+    ],
+    "baza_dry_goods": [
+      "Faina", "Orez", "Pesmet", "Fidea", "Paine", "Aluat pizza"
+    ],
+    "condimente_sosuri": [
+      "Sare", "Piper", "Paprika", "Mustar", "Maioneza", "Sos rosii", "Sos picant", "Otet", "Ulei",
+      "Ulei floarea soarelui"
+    ],
+    "produse_gatite_meniuri": [
+      "Clatite cu dulceata", "Papanasi", "Desert casei", "Specialitatea casei", "Gulas vita",
+      "Tocanita porc", "Pizza Quattro Formaggi", "Sandwich club", "Garnitura legume", "Extra paine"
+    ]
+  },
+  "bar": {
+    "bere_bauturi_ambalate": [
+      "Beck's", "Beck", "Bergenbier", "Staropramen", "Stella Artois", "Salitos", "Backs", "Dorna 0.33",
+      "Burn", "Coca-Cola", "Coca Cola", "Fanta", "Sprite", "Mirinda", "Nestea", "Kinley", "Ice Tea Lipton", "Lipton"
+    ],
+    "cafea_bar_sweet": [
+      "Cafea", "Lapte condensat", "Ciocolata bar", "Tort ciocolata"
+    ],
+    "vinuri_spumante": [
+      "Asti Martini", "Asti Cinzano", "Buceum", "Moet Chandon", "Chardonnay Segarcea",
+      "Feteasca Alba Segarcea", "Pinot Noir Recas", "Riesling Italian", "Rai de Murfatlar"
+    ],
+    "alcool_tare_lichioruri": [
+      "Absolut", "Finlandia", "Smirnoff", "Bacardi", "Ballantine's", "J&B", "Jack Daniel's",
+      "Gentleman Jack", "Jameson", "Jim Beam", "Chivas Regal", "Johnnie Walker", "Glenfiddich",
+      "Glenlivet", "Hennessy", "Martell", "Courvoisier", "Metaxa", "Ouzo", "Seagram's", "Tullamore Dew",
+      "Four Roses", "Sheridan's", "Ramazzotti", "Southern Comfort", "Zaraza"
+    ]
+  },
+  "comune": {
+    "fructe_garnish": [
+      "Lamai", "Lime", "Portocale", "Mere", "Menta"
+    ],
+    "lactate_dulci": [
+      "Lapte", "Frisca", "Inghetata"
+    ],
+    "zahar_derivate": [
+      "Zahar alb", "Zahar brun", "Zahar plic", "Zahar vanilat"
+    ],
+    "arome_condimente_bar_desert": [
+      "Scortisoara", "Cacao"
+    ],
+    "alcool_ingredient": [
+      "Vin rosu", "Amaretto", "Disaronno", "Bailey's", "Kahlua", "Triple Sec", "Lichior Melon"
+    ],
+    "siropuri": [
+      "grenadine", "lime", "cocos", "banane", "blue curacao", "curacao", "strawberry"
+    ]
+  }
+}

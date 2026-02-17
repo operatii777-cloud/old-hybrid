@@ -1,0 +1,15 @@
+{
+  "_comment": "Categorii de produse copiate din aplicația originală RestWin / RestGest v3.2 (ordinea tab-urilor POS). Folosite pentru mapare produse și afișare tab-uri.",
+  "categorii": [
+    "RACORITOARE",
+    "VINURI",
+    "ALCOOLICE",
+    "PREP PORC/VITA/PESTE",
+    "GARNITURI/SALATE",
+    "CAFEA",
+    "CIORBE/MIC DEJ/PIZZA",
+    "PREP PUI",
+    "VINURI/METAXA",
+    "DIVERSE/DESERT/SPEC"
+  ]
+}

@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-100 text-gray-900;
+}
+
+@layer components {
+  .pos-button {
+    @apply font-bold py-2 px-4 rounded cursor-pointer transition;
+  }
+
+  .pos-button-primary {
+    @apply pos-button bg-blue-500 hover:bg-blue-600 text-white;
+  }
+
+  .pos-button-success {
+    @apply pos-button bg-green-500 hover:bg-green-600 text-white;
+  }
+
+  .pos-button-danger {
+    @apply pos-button bg-red-600 hover:bg-red-700 text-white;
+  }
+
+  .pos-header {
+    @apply text-3xl font-bold text-red-600 text-center;
+  }
+
+  .pos-login-container {
+    @apply flex items-center justify-center min-h-screen bg-black;
+  }
+
+  .pos-login-box {
+    @apply relative z-10 bg-black border-4 border-red-600 rounded-lg shadow-2xl p-12 w-96;
+  }
+}

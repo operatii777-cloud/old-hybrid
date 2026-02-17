@@ -1,0 +1,1465 @@
+2026-02-03 10:02:41 [ERROR] Stocuri error: SQLITE_ERROR: no such column: s.gestiune_id {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: s.gestiune_id"
+}
+2026-02-03 10:05:14 [ERROR] Stocuri error: SQLITE_ERROR: no such column: s.cant_stoc {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: s.cant_stoc"
+}
+2026-02-03 10:06:00 [ERROR] Stocuri error: SQLITE_ERROR: no such column: s.cant_stoc {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: s.cant_stoc"
+}
+2026-02-03 10:06:41 [ERROR] Stocuri error: SQLITE_ERROR: no such column: cant_stoc {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: cant_stoc"
+}
+2026-02-03 10:07:39 [ERROR] Stocuri error: SQLITE_ERROR: no such column: cant_stoc {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: cant_stoc"
+}
+2026-02-03 10:15:37 [ERROR] Bonuri istoric error: SQLITE_ERROR: no such column: data {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: data"
+}
+2026-02-03 10:16:35 [ERROR] Bonuri istoric error: SQLITE_ERROR: no such column: data {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: data"
+}
+2026-02-03 11:04:17 [ERROR] Error opening session: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed {
+  "errno": 19,
+  "code": "SQLITE_CONSTRAINT",
+  "stack": "Error: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed"
+}
+2026-02-03 11:07:00 [ERROR] Error opening session: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed {
+  "errno": 19,
+  "code": "SQLITE_CONSTRAINT",
+  "stack": "Error: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed"
+}
+2026-02-03 11:15:24 [ERROR] All products food cost error: SQLITE_ERROR: no such column: p.cod {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: p.cod"
+}
+2026-02-03 11:16:18 [ERROR] All products food cost error: SQLITE_ERROR: no such column: p.cod {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: p.cod"
+}
+2026-02-03 11:16:53 [ERROR] All products food cost error: SQLITE_ERROR: no such column: p.cod {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: p.cod"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
+2026-02-03 11:17:16 [ERROR] Calculate product cost error: SQLITE_ERROR: no such column: r.cod_material {
+  "errno": 1,
+  "code": "SQLITE_ERROR",
+  "stack": "Error: SQLITE_ERROR: no such column: r.cod_material"
+}
