@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -12,6 +13,7 @@ import { setupSyncService } from './services/sync-service.js';
 import { setupBackupService } from './services/backup-service.js';
 import { logger } from './utils/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { performanceMonitor, setupPerformanceEndpoints } from './middleware/performance.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -23,16 +25,77 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const isLocal = process.env.NODE_ENV === 'local';
 
-// Middleware
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Performance monitoring (early in the middleware stack)
+app.use(performanceMonitor);
 
-// Static files (frontend build) — path from project root (parent of backend), not backend/
+// Performance: Enable compression for all responses
+app.use(compression({
+  level: 6, // Balance between speed and compression ratio
+  threshold: 1024, // Only compress responses > 1KB
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    return compression.filter(req, res);
+  }
+}));
+
+// Middleware - Optimized for performance and security
+app.use(helmet({
+  // Configure CSP properly for SPA instead of disabling it
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"], // Required for Vite dev mode and inline scripts
+      styleSrc: ["'self'", "'unsafe-inline'"], // Required for inline styles
+      imgSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+  // Enable DNS prefetching for better performance
+  dnsPrefetchControl: { allow: true },
+  // Enable XSS protection
+  xssFilter: true,
+  // Enable frame guard
+  frameguard: { action: 'deny' },
+  // Enable HSTS with long max-age for better security
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true
+  },
+  // Enable IE no-open for downloads
+  ieNoOpen: true,
+  // Disable client-side caching of MIME type
+  noSniff: true,
+}));
+
+app.use(cors());
+app.use(express.json({ limit: '10mb' })); // Add size limit for performance
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Static files with optimized caching strategy
 const projectRoot = path.resolve(__dirname, '..');
 const frontendBuild = path.resolve(projectRoot, process.env.FRONTEND_BUILD || 'frontend/dist');
-app.use(express.static(frontendBuild));
+
+// Cache static assets with content hashes for 1 year
+app.use(express.static(frontendBuild, {
+  maxAge: '1y', // Cache static assets for 1 year
+  immutable: true, // Assets with hash never change
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    // Don't cache HTML files - they should always be fresh
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    }
+  },
+}));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -42,6 +105,9 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Performance monitoring endpoints
+setupPerformanceEndpoints(app);
 
 // API Routes
 setupRoutes(app);

@@ -19,7 +19,15 @@ export async function initDatabase() {
       driver: sqlite3.Database
     });
 
+    // Performance optimizations for SQLite
     await db.exec('PRAGMA foreign_keys = ON');
+    await db.exec('PRAGMA journal_mode = WAL'); // Write-Ahead Logging for better concurrency
+    await db.exec('PRAGMA synchronous = NORMAL'); // Balance between safety and speed
+    await db.exec('PRAGMA cache_size = -64000'); // 64MB cache for better performance
+    await db.exec('PRAGMA temp_store = MEMORY'); // Store temp tables in memory
+    await db.exec('PRAGMA mmap_size = 268435456'); // 256MB memory-mapped I/O
+    await db.exec('PRAGMA page_size = 4096'); // Optimal page size
+    await db.exec('PRAGMA busy_timeout = 5000'); // 5 second timeout for locked database
     
     // Create tables
     await createTables();

@@ -1,41 +1,54 @@
 // RESTAURANT APP HYBRID - ADMIN DASHBOARD  
 // Interfața cu sidebar navigation ca în Restaurant App Hybrid Original
+// Optimized with lazy loading for better performance
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRestaurantStore } from '../stores/restaurantStore';
-import ExtendedFeatures from '../components/ExtendedFeatures';
-import BIDashboard from '../components/BIDashboard';
-import NIRPage from '../components/NIRPage';
-import TransferPage from '../components/TransferPage';
-import EditareRetetePage from '../components/EditareRetetePage';
-import CatalogRetetePage from '../components/CatalogRetetePage';
-import EditareProdusePage from '../components/EditareProdusePage';
-import VerificareRetetePage from '../components/VerificareRetetePage';
-import ActualizarePage from '../components/ActualizarePage';
-import ActualizarePretPage from '../components/ActualizarePretPage';
-import BackupPage from '../components/BackupPage';
-import InventarPage from '../components/InventarPage';
-import RapoarteStocuriPage from '../components/RapoarteStocuriPage';
-import RapoarteInventarPage from '../components/RapoarteInventarPage';
-import JurnalIntrariPage from '../components/JurnalIntrariPage';
-import DescManualaPage from '../components/DescManualaPage';
-import DescarcareVanzarePage from '../components/DescarcareVanzarePage';
-import ConsumPage from '../components/ConsumPage';
-import ConfigurareSystemPage from '../components/ConfigurareSystemPage';
-import ReturPage from '../components/ReturPage';
-import FacturiPage from '../components/FacturiPage';
-import RaportFurnizoriPage from '../components/RaportFurnizoriPage';
-import RaportVanzariPage from '../components/RaportVanzariPage';
-import CuratareDatePage from '../components/CuratareDatePage';
-import IstoricNIRPage from '../components/IstoricNIRPage';
-import IstoricTransferPage from '../components/IstoricTransferPage';
-import IstoricReturPage from '../components/IstoricReturPage';
-import SetariPage from '../components/SetariPage';
-import SincronizarePage from '../components/SincronizarePage';
-import ReservationsManagement from '../components/ReservationsManagement';
-import ReportingDashboard from '../components/ReportingDashboard';
+
+// Lazy load all components for better code splitting and performance
+const ExtendedFeatures = lazy(() => import('../components/ExtendedFeatures'));
+const BIDashboard = lazy(() => import('../components/BIDashboard'));
+const NIRPage = lazy(() => import('../components/NIRPage'));
+const TransferPage = lazy(() => import('../components/TransferPage'));
+const EditareRetetePage = lazy(() => import('../components/EditareRetetePage'));
+const CatalogRetetePage = lazy(() => import('../components/CatalogRetetePage'));
+const EditareProdusePage = lazy(() => import('../components/EditareProdusePage'));
+const VerificareRetetePage = lazy(() => import('../components/VerificareRetetePage'));
+const ActualizarePage = lazy(() => import('../components/ActualizarePage'));
+const ActualizarePretPage = lazy(() => import('../components/ActualizarePretPage'));
+const BackupPage = lazy(() => import('../components/BackupPage'));
+const InventarPage = lazy(() => import('../components/InventarPage'));
+const RapoarteStocuriPage = lazy(() => import('../components/RapoarteStocuriPage'));
+const RapoarteInventarPage = lazy(() => import('../components/RapoarteInventarPage'));
+const JurnalIntrariPage = lazy(() => import('../components/JurnalIntrariPage'));
+const DescManualaPage = lazy(() => import('../components/DescManualaPage'));
+const DescarcareVanzarePage = lazy(() => import('../components/DescarcareVanzarePage'));
+const ConsumPage = lazy(() => import('../components/ConsumPage'));
+const ConfigurareSystemPage = lazy(() => import('../components/ConfigurareSystemPage'));
+const ReturPage = lazy(() => import('../components/ReturPage'));
+const FacturiPage = lazy(() => import('../components/FacturiPage'));
+const RaportFurnizoriPage = lazy(() => import('../components/RaportFurnizoriPage'));
+const RaportVanzariPage = lazy(() => import('../components/RaportVanzariPage'));
+const CuratareDatePage = lazy(() => import('../components/CuratareDatePage'));
+const IstoricNIRPage = lazy(() => import('../components/IstoricNIRPage'));
+const IstoricTransferPage = lazy(() => import('../components/IstoricTransferPage'));
+const IstoricReturPage = lazy(() => import('../components/IstoricReturPage'));
+const SetariPage = lazy(() => import('../components/SetariPage'));
+const SincronizarePage = lazy(() => import('../components/SincronizarePage'));
+const ReservationsManagement = lazy(() => import('../components/ReservationsManagement'));
+const ReportingDashboard = lazy(() => import('../components/ReportingDashboard'));
+
+// Loading component for better UX during lazy loading
+const ComponentLoader = () => (
+  <div className="flex items-center justify-center h-64">
+    <div className="text-center">
+      <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-4"></div>
+      <p className="text-gray-600">Se încarcă...</p>
+    </div>
+  </div>
+);
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -87,95 +100,104 @@ export default function AdminDashboard() {
   };
 
   const renderMainContent = () => {
-    switch (activeMenuItem) {
-      case 'main':
-        return <MainDashboard onMenuSelect={setActiveMenuItem} />;
-      case 'editare-materii':
-        return <EditareMaterii />;
-      case 'stocuri':
-        return <StocuriGestiuni />;
-      case 'transfer':
-        return <TransferPage />;
-      case 'retur':
-        return <ReturPage onIesire={() => setActiveMenuItem('main')} />;
-      case 'nir':
-      case 'nir-magazie':
-      case 'nir-gestiuni':
-        return (
-          <NIRPage
-            mode={activeMenuItem === 'nir-gestiuni' ? 'gestiuni' : 'magazie'}
-          />
-        );
-      case 'furnizori':
-        return <FurnizoriOriginal />;
-      case 'retete':
-      case 'editare-retete':
-        return <EditareRetetePage />;
-      case 'catalog-retete':
-        return <CatalogRetetePage />;
-      case 'editare-produse':
-        return <EditareProdusePage />;
-      case 'verificare':
-      case 'verificare-retete':
-        return <VerificareRetetePage />;
-      case 'actualizare':
-        return <ActualizarePage />;
-      case 'actualizare-pret':
-        return <ActualizarePretPage />;
-      case 'extended-features':
-        return <ExtendedFeatures />;
-      case 'bi-dashboard':
-        return <BIDashboard />;
-      case 'backup':
-        return <BackupPage />;
-      case 'inventar':
-        return <InventarPage />;
-      case 'rapoarte-stocuri':
-        return <RapoarteStocuriPage />;
-      case 'rapoarte-inventar':
-        return <RapoarteInventarPage />;
-      case 'jurnal-intrari':
-        return <JurnalIntrariPage />;
-      case 'rapoarte-vanzari':
-        return <RaportVanzariPage />;
-      case 'desc-manuala':
-        return <DescManualaPage />;
-      case 'desc-vanzare':
-        return <DescarcareVanzarePage />;
-      case 'consum':
-        return <ConsumPage />;
-      case 'istoric-nir':
-        return <IstoricNIRPage />;
-      case 'istoric-transfer':
-        return <IstoricTransferPage />;
-      case 'istoric-retur':
-        return <IstoricReturPage />;
-      case 'config-sistem':
-        return <ConfigurareSystemPage />;
-      case 'facturi':
-      case 'lista-facturi':
-        return <FacturiPage />;
-      case 'rapoarte-furnizori':
-        return <RaportFurnizoriPage />;
-      case 'curatare-date':
-        return <CuratareDatePage />;
-      case 'setari':
-        return <SetariPage />;
-      case 'sincronizare':
-        return <SincronizarePage />;
-      case 'rezervari':
-        return <ReservationsManagement />;
-      case 'reporting-dashboard':
-        return <ReportingDashboard />;
-      case 'rapoarte':
-        return <div className="p-8"><h2 className="text-2xl font-bold">Rapoarte</h2><p>Interfață rapoarte în dezvoltare...</p></div>;
-      case 'descarcare':
-        return <div className="p-8"><h2 className="text-2xl font-bold">Descărcare</h2><p>Interfață descărcare în dezvoltare...</p></div>;
-      case 'istoric':
-        return <div className="p-8"><h2 className="text-2xl font-bold">Istoric</h2><p>Interfață istoric în dezvoltare...</p></div>;
-      default:
-        return <MainDashboard onMenuSelect={setActiveMenuItem} />;
-    }
+    const content = (() => {
+      switch (activeMenuItem) {
+        case 'main':
+          return <MainDashboard onMenuSelect={setActiveMenuItem} />;
+        case 'editare-materii':
+          return <EditareMaterii />;
+        case 'stocuri':
+          return <StocuriGestiuni />;
+        case 'transfer':
+          return <TransferPage />;
+        case 'retur':
+          return <ReturPage onIesire={() => setActiveMenuItem('main')} />;
+        case 'nir':
+        case 'nir-magazie':
+        case 'nir-gestiuni':
+          return (
+            <NIRPage
+              mode={activeMenuItem === 'nir-gestiuni' ? 'gestiuni' : 'magazie'}
+            />
+          );
+        case 'furnizori':
+          return <FurnizoriOriginal />;
+        case 'retete':
+        case 'editare-retete':
+          return <EditareRetetePage />;
+        case 'catalog-retete':
+          return <CatalogRetetePage />;
+        case 'editare-produse':
+          return <EditareProdusePage />;
+        case 'verificare':
+        case 'verificare-retete':
+          return <VerificareRetetePage />;
+        case 'actualizare':
+          return <ActualizarePage />;
+        case 'actualizare-pret':
+          return <ActualizarePretPage />;
+        case 'extended-features':
+          return <ExtendedFeatures />;
+        case 'bi-dashboard':
+          return <BIDashboard />;
+        case 'backup':
+          return <BackupPage />;
+        case 'inventar':
+          return <InventarPage />;
+        case 'rapoarte-stocuri':
+          return <RapoarteStocuriPage />;
+        case 'rapoarte-inventar':
+          return <RapoarteInventarPage />;
+        case 'jurnal-intrari':
+          return <JurnalIntrariPage />;
+        case 'rapoarte-vanzari':
+          return <RaportVanzariPage />;
+        case 'desc-manuala':
+          return <DescManualaPage />;
+        case 'desc-vanzare':
+          return <DescarcareVanzarePage />;
+        case 'consum':
+          return <ConsumPage />;
+        case 'istoric-nir':
+          return <IstoricNIRPage />;
+        case 'istoric-transfer':
+          return <IstoricTransferPage />;
+        case 'istoric-retur':
+          return <IstoricReturPage />;
+        case 'config-sistem':
+          return <ConfigurareSystemPage />;
+        case 'facturi':
+        case 'lista-facturi':
+          return <FacturiPage />;
+        case 'rapoarte-furnizori':
+          return <RaportFurnizoriPage />;
+        case 'curatare-date':
+          return <CuratareDatePage />;
+        case 'setari':
+          return <SetariPage />;
+        case 'sincronizare':
+          return <SincronizarePage />;
+        case 'rezervari':
+          return <ReservationsManagement />;
+        case 'reporting-dashboard':
+          return <ReportingDashboard />;
+        case 'rapoarte':
+          return <div className="p-8"><h2 className="text-2xl font-bold">Rapoarte</h2><p>Interfață rapoarte în dezvoltare...</p></div>;
+        case 'descarcare':
+          return <div className="p-8"><h2 className="text-2xl font-bold">Descărcare</h2><p>Interfață descărcare în dezvoltare...</p></div>;
+        case 'istoric':
+          return <div className="p-8"><h2 className="text-2xl font-bold">Istoric</h2><p>Interfață istoric în dezvoltare...</p></div>;
+        default:
+          return <MainDashboard onMenuSelect={setActiveMenuItem} />;
+      }
+    })();
+
+    // Wrap with Suspense for lazy-loaded components
+    return (
+      <Suspense fallback={<ComponentLoader />}>
+        {content}
+      </Suspense>
+    );
   };
 
   return (

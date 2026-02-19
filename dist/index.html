@@ -5,8 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Restaurant POS | Hibrid</title>
-    <script type="module" crossorigin src="/assets/index-CCt9lw2o.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Rtp1s7dO.css">
+    
+    <!-- Performance optimizations -->
+    <meta name="theme-color" content="#4F46E5" />
+    <meta name="description" content="High-performance restaurant POS system" />
+    
+    <!-- Resource hints for better performance -->
+    <link rel="preconnect" href="/api" />
+    <link rel="dns-prefetch" href="/api" />
+    
+    <!-- Preload critical assets -->
+    <link rel="modulepreload" href="data:text/jsx;base64,aW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JzsNCmltcG9ydCBSZWFjdERPTSBmcm9tICdyZWFjdC1kb20vY2xpZW50JzsNCmltcG9ydCBBcHAgZnJvbSAnLi9BcHAnOw0KaW1wb3J0ICcuL3N0eWxlcy9nbG9iYWxzLmNzcyc7DQoNClJlYWN0RE9NLmNyZWF0ZVJvb3QoZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3Jvb3QnKSkucmVuZGVyKA0KICA8UmVhY3QuU3RyaWN0TW9kZT4NCiAgICA8QXBwIC8+DQogIDwvUmVhY3QuU3RyaWN0TW9kZT4NCik7DQo=" />
+    <link rel="modulepreload" href="data:text/jsx;base64,aW1wb3J0IFJlYWN0LCB7IFN1c3BlbnNlLCBsYXp5IH0gZnJvbSAncmVhY3QnOw0KaW1wb3J0IHsgQnJvd3NlclJvdXRlciBhcyBSb3V0ZXIsIFJvdXRlcywgUm91dGUsIE5hdmlnYXRlIH0gZnJvbSAncmVhY3Qtcm91dGVyLWRvbSc7DQoNCi8vIExhenkgbG9hZCBwYWdlcyBmb3IgY29kZSBzcGxpdHRpbmcgYW5kIGJldHRlciBwZXJmb3JtYW5jZQ0KY29uc3QgTG9naW5QYWdlID0gbGF6eSgoKSA9PiBpbXBvcnQoJy4vcGFnZXMvTG9naW5QYWdlJykpOw0KY29uc3QgUGxhbk1lc2VQYWdlID0gbGF6eSgoKSA9PiBpbXBvcnQoJy4vcGFnZXMvUGxhbk1lc2VQYWdlJykpOw0KY29uc3QgQ29tYW5kYVBhZ2UgPSBsYXp5KCgpID0+IGltcG9ydCgnLi9wYWdlcy9Db21hbmRhUGFnZScpKTsNCmNvbnN0IEFkbWluRGFzaGJvYXJkID0gbGF6eSgoKSA9PiBpbXBvcnQoJy4vcGFnZXMvQWRtaW5EYXNoYm9hcmQnKSk7DQpjb25zdCBLRFNQYWdlID0gbGF6eSgoKSA9PiBpbXBvcnQoJy4vcGFnZXMvS0RTUGFnZScpKTsNCg0KLy8gTG9hZGluZyBjb21wb25lbnQgZm9yIGJldHRlciBVWA0KY29uc3QgTG9hZGluZ0ZhbGxiYWNrID0gKCkgPT4gKA0KICA8ZGl2IHN0eWxlPXt7DQogICAgZGlzcGxheTogJ2ZsZXgnLA0KICAgIGp1c3RpZnlDb250ZW50OiAnY2VudGVyJywNCiAgICBhbGlnbkl0ZW1zOiAnY2VudGVyJywNCiAgICBoZWlnaHQ6ICcxMDB2aCcsDQogICAgZm9udFNpemU6ICcxLjVyZW0nLA0KICAgIGNvbG9yOiAnIzRGNDZFNScNCiAgfX0+DQogICAgTG9hZGluZy4uLg0KICA8L2Rpdj4NCik7DQoNCmZ1bmN0aW9uIEFwcCgpIHsNCiAgcmV0dXJuICgNCiAgICA8Um91dGVyPg0KICAgICAgPFN1c3BlbnNlIGZhbGxiYWNrPXs8TG9hZGluZ0ZhbGxiYWNrIC8+fT4NCiAgICAgICAgPFJvdXRlcz4NCiAgICAgICAgICA8Um91dGUgcGF0aD0iLyIgZWxlbWVudD17PExvZ2luUGFnZSAvPn0gLz4NCiAgICAgICAgICA8Um91dGUgcGF0aD0iL3BsYW4tbWVzZSIgZWxlbWVudD17PFBsYW5NZXNlUGFnZSAvPn0gLz4NCiAgICAgICAgICA8Um91dGUgcGF0aD0iL2NvbWFuZGEiIGVsZW1lbnQ9ezxDb21hbmRhUGFnZSAvPn0gLz4NCiAgICAgICAgICA8Um91dGUgcGF0aD0iL2FkbWluLWRhc2hib2FyZCIgZWxlbWVudD17PEFkbWluRGFzaGJvYXJkIC8+fSAvPg0KICAgICAgICAgIDxSb3V0ZSBwYXRoPSIvYWRtaW4iIGVsZW1lbnQ9ezxBZG1pbkRhc2hib2FyZCAvPn0gLz4NCiAgICAgICAgICA8Um91dGUgcGF0aD0iL2tkcyIgZWxlbWVudD17PEtEU1BhZ2UgLz59IC8+DQogICAgICAgICAgPFJvdXRlIHBhdGg9IioiIGVsZW1lbnQ9ezxOYXZpZ2F0ZSB0bz0iLyIgLz59IC8+DQogICAgICAgIDwvUm91dGVzPg0KICAgICAgPC9TdXNwZW5zZT4NCiAgICA8L1JvdXRlcj4NCiAgKTsNCn0NCg0KZXhwb3J0IGRlZmF1bHQgQXBwOw0K" />
+    <script type="module" crossorigin src="/assets/js/index-Cl-k7ofa.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/js/react-vendor-Ba8lOEmn.js">
+    <link rel="stylesheet" crossorigin href="/assets/css/index-CU6z4NJT.css">
   </head>
   <body>
     <div id="root"></div>
