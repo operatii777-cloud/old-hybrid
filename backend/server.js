@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { initDatabase } from './database/init-db.js';
 import { initDatabase as initNovaDatabase } from './src/loaders/database.js';
+import { runMigrations } from './database/migrate.js';
 import { setupRoutes } from './routes/index.js';
 import { setupSyncService } from './services/sync-service.js';
 import { setupBackupService } from './services/backup-service.js';
@@ -61,6 +62,9 @@ async function initialize() {
 
     // Initialize NOVA v10.0 Kernel (Audit, WAL, Advanced Schema)
     await initNovaDatabase();
+
+    // Run database migrations
+    await runMigrations();
 
     logger.info('✅ NOVA v10.0 System Architecture Initialized');
     logger.info('Database initialized');
