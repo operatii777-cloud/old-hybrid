@@ -4,6 +4,71 @@
 
 A comprehensive, production-ready universal application for managing restaurants, cafes, and fast-food establishments. This system provides complete functionality for menu management, order processing, table management, payment processing, discount management, and business statistics.
 
+---
+
+## 🆕 New Modules (v2.0)
+
+### 🧾 POS Upgrades
+- **3-tier pricing** – PRET1 (Normal/Fidel), PRET2 (Fidel), PRET3 (VIP); select tier per session; all totals recalculated correctly.
+- **Order-level discounts** – Apply a % discount to an entire order from the POS DISC% button.
+- **Voucher / Promo redemption** – Enter or scan a voucher code from POS; the system validates the code against the `/api/vouchers` catalogue, applies the discount, and records usage. Both manual entry and barcode scan are supported.
+- **Protocol payments** – PROTOCOL button sets total to 0 RON (zero-încasări); fully audited.
+- **Split bill (SEP)** – Transfer individual lines between two receipt halves and pay each separately.
+
+#### Vouchers API
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/vouchers` | List all vouchers |
+| GET | `/api/vouchers/:cod` | Get single voucher by code |
+| POST | `/api/vouchers/:cod/redeem` | Validate & redeem voucher (body: `{total, ospatar_id, ospatar_nume}`) |
+| POST | `/api/vouchers` | Create voucher |
+| PUT | `/api/vouchers/:id` | Update voucher |
+| DELETE | `/api/vouchers/:id` | Delete voucher |
+
+### 🖥 KDS – Kitchen Display System
+Route: `/kds`
+
+- **Station routing** – Products in groups RACORITOARE, VINURI, ALCOOLICE, CAFEA, VINURI/METAXA are routed to the `bar` station; everything else goes to `bucatarie`.
+- **Status board** – Three-column Kanban: IN AȘTEPTARE → IN PREPARARE → GATA.
+- **SLA highlighting** – Items pending > 15 min or preparing > 20 min are highlighted in red.
+- **Auto-push** – When a POS order is finalized, all lines are automatically pushed to KDS (no manual step needed).
+- **Auto-refresh** – Board auto-refreshes every 10 seconds.
+
+#### KDS API
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/kds/board?statie=bucatarie` | Get KDS board for a station |
+| GET | `/api/kds/comanda/:id` | Get all KDS items for a comanda |
+| PUT | `/api/kds/:id/status` | Update a single KDS item status |
+| PUT | `/api/kds/comanda/:id/status` | Bulk update all items for a comanda |
+| POST | `/api/kds/push` | Manually push comanda lines to KDS |
+
+### 📊 Admin – Unified AG Grid
+All admin tables are built on `src/components/AdminGrid.jsx`, a single AG Grid wrapper that provides:
+- Consistent dark Alpine theme
+- Default sortable/filterable/resizable columns
+- Range selection & clipboard copy/paste
+- CSV + XLSX export buttons
+- Pagination (50 rows/page)
+- Optional pinned action column
+
+### 🔔 Low-Stock Alerts
+- **Route**: `GET /api/stoc/alerte` – Scans inventory for items below `cant_minim`, creates alerts, auto-resolves when stock recovers.
+- **Resolve**: `PUT /api/stoc/alerte/:id/rezolva`
+- Alerts are stored in `alerte_stoc_scazut` table.
+
+### 📋 Audit Events
+The following POS actions are now logged to `audit_log`:
+- `COMANDA_FINALIZARE` – every payment (cash/card/virament/prof)
+- `PROTOCOL_PAYMENT` – protocol (zero-încasări) payments
+- `VOUCHER_REDEEM` – voucher redemptions
+- `KDS_STATUS_UPDATE` – KDS status transitions
+
+### ⚙️ Centralized Error Handler
+A new Express error handler in `backend/middleware/errorHandler.js` catches all unhandled errors and returns a consistent `{ ok: false, error: "..." }` JSON response. It is registered automatically after all routes in `server.js`.
+
+---
+
 ## ✨ Key Features / Functionalitati Cheie
 
 ### 🏪 Multi-Business Support

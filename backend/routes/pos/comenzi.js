@@ -185,11 +185,11 @@ router.put('/:id/linii', async (req, res) => {
 // Finalizare comandă: status finalizat + descărcare stocuri (o singură dată)
 router.put('/:id/finalizare', async (req, res) => {
   const { id: comandaId } = req.params;
-  const { tip_plata } = req.body;
+  const { tip_plata, tip_pret, discount_ordin, voucher_cod, discount_voucher } = req.body;
 
   try {
     const db = getDatabase();
-    const comanda = await db.get('SELECT id, status, stocuri_descarcate, masa_id FROM comenzi WHERE id = ?', [comandaId]);
+    const comanda = await db.get('SELECT id, status, stocuri_descarcate, masa_id, total FROM comenzi WHERE id = ?', [comandaId]);
     if (!comanda) {
       return res.status(404).json({ error: 'Comandă negăsită' });
     }
@@ -210,12 +210,63 @@ router.put('/:id/finalizare', async (req, res) => {
     }
 
     const tipVal = tip_plata != null ? tip_plata : 1;
-    const discountVal = (tipVal === 5 || tipVal === '5') ? 100 : 0;
+    const isProtocol = (tipVal === 5 || tipVal === '5');
+    const discountVal = isProtocol ? 100 : (Number(discount_ordin) || 0);
+    const discountVoucherVal = Number(discount_voucher) || 0;
+
     await db.run(
-      'UPDATE comenzi SET status = ?, stocuri_descarcate = 1, tip_plata = ?, discount = ? WHERE id = ?',
-      ['finalizat', tipVal, discountVal, comandaId]
+      `UPDATE comenzi SET status = ?, stocuri_descarcate = 1, tip_plata = ?, discount = ?,
+        discount_voucher = COALESCE(discount_voucher, ?),
+        voucher_cod = COALESCE(voucher_cod, ?),
+        tip_pret = COALESCE(tip_pret, ?)
+       WHERE id = ?`,
+      ['finalizat', tipVal, discountVal, discountVoucherVal, voucher_cod || null, tip_pret || 'PRET1', comandaId]
     );
     await db.run('UPDATE mese SET status = ?, ospatar_id = NULL WHERE id = ?', ['libera', comanda.masa_id]);
+
+    // Audit: log finalizare with payment type, discounts, protocol
+    try {
+      const auditDetails = { tip_plata: tipVal, discount_ordin: discountVal, discount_voucher: discountVoucherVal, voucher_cod, tip_pret, total: comanda.total };
+      const { logAuditAction } = await import('../../middleware/audit.js');
+      await logAuditAction({
+        user_id: 'system',
+        user_nume: 'POS',
+        user_rol: 'OSPATAR',
+        actiune: isProtocol ? 'PROTOCOL_PAYMENT' : 'COMANDA_FINALIZARE',
+        entitate: 'comenzi',
+        entitate_id: comandaId,
+        descriere: `Comandă ${comandaId} finalizată. Plată: ${tipVal}${isProtocol ? ' (PROTOCOL - 0 RON)' : ''}${discountVal > 0 ? `, disc ${discountVal}%` : ''}${voucher_cod ? `, voucher ${voucher_cod}` : ''}`,
+        categorie: 'financial',
+        nivel_risc: (isProtocol || discountVal > 0 || discountVoucherVal > 0) ? 'medium' : 'low',
+        valori_noi: JSON.stringify(auditDetails)
+      });
+    } catch (auditErr) {
+      logger.warn('Audit finalizare error:', auditErr.message);
+    }
+
+    // Push to KDS (fire and forget)
+    try {
+      const linii = await db.all('SELECT * FROM comenzi_linii WHERE comanda_id = ?', [comandaId]);
+      if (linii.length > 0) {
+        const { getDatabase: getDb } = await import('../../database/init-db.js');
+        const { detectStatie } = await import('../../utils/kds-routing.js');
+        const coduri = [...new Set(linii.map(l => l.cod_prod))];
+        const placeholders = coduri.map(() => '?').join(',');
+        const produse = coduri.length > 0 ? await getDb().all(`SELECT cod_prod, den_prod, grupa FROM produse_pos WHERE cod_prod IN (${placeholders})`, coduri) : [];
+        const produseMap = Object.fromEntries(produse.map(p => [p.cod_prod, p]));
+        for (const linie of linii) {
+          const produs = produseMap[linie.cod_prod] || {};
+          const statie = detectStatie(produs.den_prod || '', produs.grupa);
+          await getDb().run(
+            `INSERT OR IGNORE INTO kds_items (comanda_id, linie_id, cod_prod, den_prod, cant, statie, masa_id)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [comandaId, linie.id, linie.cod_prod, produs.den_prod || String(linie.cod_prod), linie.cant, statie, comanda.masa_id]
+          ).catch(() => {});
+        }
+      }
+    } catch (kdsErr) {
+      logger.warn('KDS push error (non-fatal):', kdsErr.message);
+    }
 
     logger.info(`Comandă finalizată: ${comandaId}`);
     res.json({ success: true, message: 'Comandă finalizată' });

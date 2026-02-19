@@ -2,6 +2,7 @@ import loginRoutes from './auth/login.js';
 import meseRoutes from './pos/mese.js';
 import comenziRoutes from './pos/comenzi.js';
 import produsRoute from './pos/produse.js';
+import kdsRoutes from './pos/kds.js';
 import adminRoutes from './admin/dashboard.js';
 import magazieRoutes from './admin/magazie.js';
 import historyRoutes from './admin/history.js';
@@ -22,6 +23,8 @@ import utilizatoriRoutes from './admin/utilizatori.js';
 import parserRoutes from './admin/parser.js';
 import invoicesRoutes from './admin/invoices.js';
 import reservationsRoutes from './admin/reservations.js';
+import vouchersRoutes from './admin/vouchers.js';
+import stocAlerteRoutes from './admin/stoc-alerte.js';
 
 export function setupRoutes(app) {
   // Auth
@@ -34,6 +37,7 @@ export function setupRoutes(app) {
   app.use('/api/mese', meseRoutes);
   app.use('/api/comenzi', comenziRoutes);
   app.use('/api/produse', produsRoute);
+  app.use('/api/kds', kdsRoutes);
 
   // Admin
   app.use('/api/admin', adminRoutes);
@@ -55,9 +59,11 @@ export function setupRoutes(app) {
   app.use('/api/utilizatori', utilizatoriRoutes);
   app.use('/api/invoices', invoicesRoutes);
   app.use('/api/reservations', reservationsRoutes);
+  app.use('/api/vouchers', vouchersRoutes);
+  app.use('/api/stoc', stocAlerteRoutes);
 
   // Not found
   app.use('/api/*', (req, res) => {
-    res.status(404).json({ error: 'Not found' });
+    res.status(404).json({ ok: false, error: 'Not found' });
   });
 }
