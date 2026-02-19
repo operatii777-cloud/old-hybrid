@@ -40,11 +40,15 @@ export default function MateriiPrimePage() {
     setLoading(true);
     try {
       const r = await axios.get('/api/magazie/materii-prime');
-      setMateriiPrime(r.data || []);
+      const data = r.data || [];
+      setMateriiPrime(data);
+      setLoading(false);
+      return data;
     } catch (e) {
       console.error(e);
+      setLoading(false);
+      return [];
     }
-    setLoading(false);
   };
 
   const loadNextCod = async () => {
@@ -146,9 +150,10 @@ export default function MateriiPrimePage() {
       });
       await saveAlergeni(selectedMaterial.cod);
       setEditMode(false);
-      await loadAll();
+      const updated = await loadAll();
       await loadMaterialAlergeni(selectedMaterial.cod);
-      setSelectedMaterial(materiiPrime.find(m => m.cod === selectedMaterial.cod) || selectedMaterial);
+      const found = updated.find(m => m.cod === selectedMaterial.cod);
+      if (found) setSelectedMaterial(found);
     } catch (e) {
       setMessage({ type: 'error', text: e.response?.data?.error || 'Eroare la actualizare' });
     }

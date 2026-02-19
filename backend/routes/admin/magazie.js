@@ -1,7 +1,16 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { getDatabase } from '../../database/init-db.js';
 import { logger } from '../../utils/logger.js';
 import { isIngredientExclus } from '../../utils/ingrediente-excluse.js';
+
+const magazieLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { ok: false, error: 'Prea multe cereri.' }
+});
 
 const router = express.Router();
 const db = () => getDatabase();
@@ -42,7 +51,7 @@ router.get('/materii-prime/:cod', async (req, res) => {
   }
 });
 
-router.post('/materii-prime', async (req, res) => {
+router.post('/materii-prime', magazieLimiter, async (req, res) => {
   try {
     let { cod, denumire, um, pret, grupa, st_min, coef, zile, tva, barcod } = req.body;
 
@@ -53,7 +62,7 @@ router.post('/materii-prime', async (req, res) => {
       return res.status(400).json({ error: 'Acest tip de ingredient (derivat/preparat, ex. apă fierbinte, spumă de lapte) nu se înregistrează ca material de stoc.' });
     }
 
-    // Auto-generare cod unic dacă nu este furnizat
+    // Auto-generare cod unic dacă nu este furnizat (SQLite serialized writes; OK pentru uz single-server)
     if (!cod) {
       const maxCod = await db().get('SELECT COALESCE(MAX(cod), 0) as max_cod FROM materii_prime');
       cod = (maxCod.max_cod || 0) + 1;
