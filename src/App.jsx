@@ -7,6 +7,7 @@ const PlanMesePage = lazy(() => import('./pages/PlanMesePage'));
 const ComandaPage = lazy(() => import('./pages/ComandaPage'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const KDSPage = lazy(() => import('./pages/KDSPage'));
+const HORECAPromptPage = lazy(() => import('./pages/HORECAPromptPage'));
 
 // Loading component for better UX
 const LoadingFallback = () => (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/kds" element={<KDSPage />} />
+          <Route path="/horeca-prompt" element={<HORECAPromptPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
