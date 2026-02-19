@@ -1,9 +1,11 @@
 import { getDatabase } from './init-db.js';
 import { logger } from '../utils/logger.js';
 import * as migration001 from './migrations/001_add_roles.js';
+import * as migration003 from './migrations/003_vouchers_kds.js';
 
 const migrations = [
-  { id: '001_add_roles', name: 'Add role-based access control', up: migration001.up, down: migration001.down }
+  { id: '001_add_roles', name: 'Add role-based access control', up: migration001.up, down: migration001.down },
+  { id: '003_vouchers_kds', name: 'Add vouchers, KDS and low-stock alerts', up: migration003.up, down: migration003.down }
 ];
 
 /**

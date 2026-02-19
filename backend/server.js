@@ -11,6 +11,7 @@ import { setupRoutes } from './routes/index.js';
 import { setupSyncService } from './services/sync-service.js';
 import { setupBackupService } from './services/backup-service.js';
 import { logger } from './utils/logger.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,6 +45,9 @@ app.get('/api/health', (req, res) => {
 
 // API Routes
 setupRoutes(app);
+
+// Centralized error handler (must be after routes)
+app.use(errorHandler);
 
 // SPA fallback (React Router) — path must be absolute; no cache pentru index ca să se încarce mereu build-ul curent
 app.get('*', (req, res) => {

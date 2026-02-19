@@ -9,7 +9,7 @@ import { printBon } from '../utils/printBon';
 
 const TIP_PRETURI = {
   PRET1: { label: 'Preț 1 (Normal)', color: 'bg-blue-100 text-blue-800' },
-  PRET2: { label: 'Preț 2 (Premium)', color: 'bg-green-100 text-green-800' },
+  PRET2: { label: 'Preț 2 (Fidel)', color: 'bg-green-100 text-green-800' },
   PRET3: { label: 'Preț 3 (VIP)', color: 'bg-purple-100 text-purple-800' }
 };
 
@@ -35,6 +35,18 @@ export default function ComandaPage() {
   const [barcode, setBarcode] = useState('');
   const [showBarcodeInput, setShowBarcodeInput] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Discount state
+  const [discountOrdin, setDiscountOrdin] = useState(0);       // order-level % discount
+  const [showDiscount, setShowDiscount] = useState(false);
+  const [discountInput, setDiscountInput] = useState('');
+  const [lineDiscountIdx, setLineDiscountIdx] = useState(-1);  // line-level discount
+
+  // Voucher state
+  const [voucherCod, setVoucherCod] = useState('');
+  const [voucherLoading, setVoucherLoading] = useState(false);
+  const [voucherAplicat, setVoucherAplicat] = useState(null);  // { discount, cod }
+  const [showVoucher, setShowVoucher] = useState(false);
 
   const selectedMasa = mese.find(m => m.selectata);
 
@@ -78,14 +90,50 @@ export default function ComandaPage() {
 
   const getPretProdus = (produs) => {
     switch (tipPret) {
-      case 'PRET2': return Number(produs.pret2) ?? Number(produs.pret1);
-      case 'PRET3': return Number(produs.pret3) ?? Number(produs.pret1);
+      case 'PRET2': return Number(produs.pret2) || Number(produs.pret1);
+      case 'PRET3': return Number(produs.pret3) || Number(produs.pret1);
       default: return Number(produs.pret1);
     }
   };
 
   const handleAnulare = () => {
-    if (currentComanda.linii.length > 0) resetComanda();
+    if (currentComanda.linii.length > 0) {
+      resetComanda();
+      setDiscountOrdin(0);
+      setVoucherAplicat(null);
+      setVoucherCod('');
+    }
+  };
+
+  const handleApplyDiscountOrdin = () => {
+    const d = Math.max(0, Math.min(100, Number(discountInput) || 0));
+    setDiscountOrdin(d);
+    setShowDiscount(false);
+    setDiscountInput('');
+  };
+
+  const handleVoucherRedeem = async () => {
+    if (!voucherCod.trim()) return;
+    setVoucherLoading(true);
+    try {
+      const res = await axios.post(`/api/vouchers/${voucherCod.trim()}/redeem`, {
+        total: subtotalBrut,
+        ospatar_id: ospatar.id,
+        ospatar_nume: ospatar.nume
+      });
+      if (res.data.ok) {
+        setVoucherAplicat({ discount: res.data.data.discount, cod: voucherCod.trim() });
+        setShowVoucher(false);
+        setVoucherCod('');
+        alert(`Voucher aplicat! Discount: ${res.data.data.discount.toFixed(2)} RON`);
+      } else {
+        alert(res.data.error || 'Voucher invalid');
+      }
+    } catch (err) {
+      alert(err.response?.data?.error || err.message || 'Eroare la validarea voucher-ului');
+    } finally {
+      setVoucherLoading(false);
+    }
   };
 
   const handleMemo = async () => {
@@ -150,22 +198,35 @@ export default function ComandaPage() {
         const createRes = await axios.post('/api/comenzi', {
           masa_id: selectedMasa.id,
           ospatar_id: ospatar.id,
-          linii: payload
+          linii: payload,
+          tip_pret: tipPret,
+          discount_ordin: discountOrdin,
+          voucher_cod: voucherAplicat?.cod || null,
+          discount_voucher: voucherAplicat?.discount || 0
         });
         comandaId = createRes.data?.comanda_id;
         if (!comandaId) throw new Error('Nu s-a primit id comandă');
       }
 
-      const finalRes = await axios.put(`/api/comenzi/${comandaId}/finalizare`, { tip_plata: tipPlata });
+      const finalRes = await axios.put(`/api/comenzi/${comandaId}/finalizare`, {
+        tip_plata: tipPlata,
+        tip_pret: tipPret,
+        discount_ordin: discountOrdin,
+        voucher_cod: voucherAplicat?.cod || null,
+        discount_voucher: voucherAplicat?.discount || 0
+      });
       if (finalRes.data?.success) {
-        const totalPlata = linii.reduce((s, l) => s + (Number(l.cant) || 0) * (Number(l.pret_unitar) || 0), 0);
+        const subtotal = linii.reduce((s, l) => s + (Number(l.cant) || 0) * (Number(l.pret_unitar) || 0), 0);
+        const totalFinal = tipPlata === 5 ? 0 : totalAfisat;
         if (!liniiOverride) {
           resetComanda();
           updateMasaStatus(selectedMasa.id, 'libera');
+          setDiscountOrdin(0);
+          setVoucherAplicat(null);
         }
-        if (printDupaPlata) printBon({ linii, total: tipPlata === 5 ? 0 : totalPlata, tipPlata, masaId: selectedMasa.id, ospatar });
+        if (printDupaPlata) printBon({ linii, total: totalFinal, tipPlata, masaId: selectedMasa.id, ospatar, discountOrdin, voucherDiscount: voucherAplicat?.discount || 0 });
         const label = TIP_PLATA_LABELS[tipPlata] || 'CASH';
-        alert(`Comandă încasată (${label}). Total: ${(tipPlata === 5 ? 0 : totalPlata).toFixed(2)} RON`);
+        alert(`Comandă încasată (${label}). Total: ${totalFinal.toFixed(2)} RON`);
         if (!liniiOverride) navigate('/plan-mese');
       } else throw new Error(finalRes.data?.error || 'Eroare finalizare');
     } catch (err) {
@@ -200,7 +261,12 @@ export default function ComandaPage() {
   const handleProtocol = () => handlePlata(5);
 
   const linii = currentComanda.linii || [];
-  const totalCalculat = linii.reduce((s, l) => s + (Number(l.cant) || 0) * (Number(l.pret_unitar) || 0), 0);
+  const subtotalBrut = linii.reduce((s, l) => s + (Number(l.cant) || 0) * (Number(l.pret_unitar) || 0), 0);
+  // Apply order discount %
+  const discountOrdinVal = discountOrdin > 0 ? Math.round(subtotalBrut * discountOrdin / 100 * 100) / 100 : 0;
+  // Apply voucher discount
+  const discountVoucherVal = voucherAplicat ? voucherAplicat.discount : 0;
+  const totalCalculat = Math.max(0, subtotalBrut - discountOrdinVal - discountVoucherVal);
   const totalAfisat = Math.round(totalCalculat * 100) / 100;
 
   return (
@@ -221,6 +287,7 @@ export default function ComandaPage() {
               key={key}
               onClick={() => setTipPret(key)}
               className={`px-2 py-1 text-xs rounded font-bold ${tipPret === key ? 'bg-yellow-400 text-black' : 'bg-gray-600 text-white hover:bg-gray-500'}`}
+              title={TIP_PRETURI[key].label}
             >{key}</button>
           ))}
         </div>
@@ -273,8 +340,40 @@ export default function ComandaPage() {
             <button onClick={handleAnulare} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded text-xs">ANULARE</button>
             <button onClick={() => setShowPlu(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded text-xs">PLU</button>
             <button onClick={() => setShowSep(true)} disabled={linii.length === 0} className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded text-xs disabled:opacity-50">SEP</button>
-            <button onClick={() => navigate('/plan-mese')} className="col-span-2 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 rounded text-xs">IESIRE</button>
+            <button onClick={() => setShowDiscount(v => !v)} className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 rounded text-xs">DISC%</button>
+            <button onClick={() => setShowVoucher(v => !v)} className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 rounded text-xs">VOUCHER</button>
+            <button onClick={() => navigate('/plan-mese')} className="col-span-3 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 rounded text-xs">IESIRE</button>
           </div>
+
+          {/* Order-level discount panel */}
+          {showDiscount && (
+            <div className="mt-2 bg-gray-700 p-2 rounded border border-orange-500">
+              <div className="text-xs text-orange-400 font-bold mb-1">Discount Comandă (%)</div>
+              <div className="flex gap-1 items-center">
+                <input type="number" min="0" max="100" value={discountInput} onChange={e => setDiscountInput(e.target.value)}
+                  placeholder="0-100%" className="px-2 py-1 rounded text-xs bg-black text-white border border-gray-500 w-20" />
+                <button onClick={handleApplyDiscountOrdin} className="px-2 py-1 bg-orange-500 text-white text-xs rounded font-bold">Aplică</button>
+                <button onClick={() => { setDiscountOrdin(0); setShowDiscount(false); }} className="px-2 py-1 bg-gray-600 text-white text-xs rounded">Resetează</button>
+              </div>
+              {discountOrdin > 0 && <div className="text-xs text-orange-300 mt-1">Discount activ: {discountOrdin}% (−{discountOrdinVal.toFixed(2)} RON)</div>}
+            </div>
+          )}
+
+          {/* Voucher panel */}
+          {showVoucher && (
+            <div className="mt-2 bg-gray-700 p-2 rounded border border-teal-500">
+              <div className="text-xs text-teal-400 font-bold mb-1">Cod Voucher / Promoție</div>
+              <div className="flex gap-1 items-center">
+                <input type="text" value={voucherCod} onChange={e => setVoucherCod(e.target.value)}
+                  onKeyPress={e => e.key === 'Enter' && handleVoucherRedeem()}
+                  placeholder="Cod voucher..." className="px-2 py-1 rounded text-xs bg-black text-white border border-gray-500 flex-1" autoFocus />
+                <button onClick={handleVoucherRedeem} disabled={voucherLoading} className="px-2 py-1 bg-teal-500 text-white text-xs rounded font-bold disabled:opacity-50">
+                  {voucherLoading ? '...' : 'Aplică'}
+                </button>
+              </div>
+              {voucherAplicat && <div className="text-xs text-teal-300 mt-1">✓ Voucher {voucherAplicat.cod}: −{voucherAplicat.discount.toFixed(2)} RON</div>}
+            </div>
+          )}
         </div>
 
         <div className="col-span-3">
@@ -302,9 +401,11 @@ export default function ComandaPage() {
               })}
             </div>
 
-            <div className="bg-black p-2 rounded border border-yellow-600 mb-2">
-              <div className="flex justify-between text-xs font-bold mb-1"><span>Subtotal:</span><span className="text-yellow-400">{totalAfisat.toFixed(2)} RON</span></div>
-              <div className="flex justify-between text-xs font-bold text-lg"><span>TOTAL:</span><span className="text-red-400 text-xl">{totalAfisat.toFixed(2)} RON</span></div>
+            <div className="bg-black p-2 rounded border border-yellow-600 mb-2 text-xs">
+              <div className="flex justify-between mb-0.5"><span>Subtotal:</span><span className="text-yellow-400">{subtotalBrut.toFixed(2)} RON</span></div>
+              {discountOrdin > 0 && <div className="flex justify-between mb-0.5 text-orange-400"><span>Disc {discountOrdin}%:</span><span>−{discountOrdinVal.toFixed(2)} RON</span></div>}
+              {voucherAplicat && <div className="flex justify-between mb-0.5 text-teal-400"><span>Voucher:</span><span>−{discountVoucherVal.toFixed(2)} RON</span></div>}
+              <div className="flex justify-between font-bold text-lg mt-1"><span>TOTAL:</span><span className="text-red-400 text-xl">{totalAfisat.toFixed(2)} RON</span></div>
             </div>
 
             <div className="grid grid-cols-2 gap-1">
@@ -312,7 +413,7 @@ export default function ComandaPage() {
               <button onClick={handleCard} disabled={finalizareLoading} className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-1 rounded text-xs">{finalizareLoading ? '...' : 'CARD'}</button>
               <button onClick={handleVirament} disabled={finalizareLoading} className="bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white font-bold py-1 rounded text-xs">{finalizareLoading ? '...' : 'VIRAMENT'}</button>
               <button onClick={handleProf} disabled={finalizareLoading} className="bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold py-1 rounded text-xs">{finalizareLoading ? '...' : 'PROF'}</button>
-              <button onClick={handleProtocol} disabled={finalizareLoading} className="col-span-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-bold py-1 rounded text-xs">{finalizareLoading ? '...' : 'PROTOCOL'}</button>
+              <button onClick={handleProtocol} disabled={finalizareLoading} className="col-span-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-bold py-1 rounded text-xs">{finalizareLoading ? '...' : 'PROTOCOL (0 RON)'}</button>
             </div>
           </div>
         </div>

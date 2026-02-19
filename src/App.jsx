@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import PlanMesePage from './pages/PlanMesePage';
 import ComandaPage from './pages/ComandaPage';
 import AdminDashboard from './pages/AdminDashboard';
+import KDSPage from './pages/KDSPage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/comanda" element={<ComandaPage />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/kds" element={<KDSPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
