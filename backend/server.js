@@ -13,6 +13,7 @@ import { setupSyncService } from './services/sync-service.js';
 import { setupBackupService } from './services/backup-service.js';
 import { logger } from './utils/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { performanceMonitor, setupPerformanceEndpoints } from './middleware/performance.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -23,6 +24,9 @@ dotenv.config({ path: `.env.${env}` });
 const app = express();
 const PORT = process.env.PORT || 3000;
 const isLocal = process.env.NODE_ENV === 'local';
+
+// Performance monitoring (early in the middleware stack)
+app.use(performanceMonitor);
 
 // Performance: Enable compression for all responses
 app.use(compression({
@@ -36,8 +40,28 @@ app.use(compression({
   }
 }));
 
-// Middleware
-app.use(helmet());
+// Middleware - Optimized for performance
+app.use(helmet({
+  contentSecurityPolicy: false, // Allow inline scripts for SPA
+  crossOriginEmbedderPolicy: false,
+  // Enable DNS prefetching for better performance
+  dnsPrefetchControl: { allow: true },
+  // Enable XSS protection
+  xssFilter: true,
+  // Enable frame guard
+  frameguard: { action: 'deny' },
+  // Enable HSTS with long max-age for better security
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true
+  },
+  // Enable IE no-open for downloads
+  ieNoOpen: true,
+  // Disable client-side caching of MIME type
+  noSniff: true,
+}));
+
 app.use(cors());
 app.use(express.json({ limit: '10mb' })); // Add size limit for performance
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -60,6 +84,9 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Performance monitoring endpoints
+setupPerformanceEndpoints(app);
 
 // API Routes
 setupRoutes(app);

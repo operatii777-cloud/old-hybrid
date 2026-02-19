@@ -1,10 +1,11 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, memo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 /**
  * AdminGrid – unified AG Grid wrapper for all admin table views.
+ * Optimized with React.memo to prevent unnecessary re-renders.
  *
  * Props:
  *  - rowData: array of row objects
@@ -16,7 +17,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
  *  - height: grid height (default 500px)
  *  - ...rest: any other AgGridReact props
  */
-export default function AdminGrid({
+const AdminGrid = memo(function AdminGrid({
   rowData = [],
   columnDefs = [],
   defaultColDef: userDefaultColDef = {},
@@ -89,9 +90,13 @@ export default function AdminGrid({
           pagination={true}
           paginationPageSize={50}
           domLayout="normal"
+          // Performance optimization: row virtualization
+          suppressRowVirtualisation={false}
           {...rest}
         />
       </div>
     </div>
   );
-}
+});
+
+export default AdminGrid;
