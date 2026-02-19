@@ -25,9 +25,9 @@ export const ALERGENI_EU = [
 /** Reguli de mapare ingredient → alergeni detectați */
 const REGULI_ALERGENI = [
   // Gluten
-  { alergen: 'A01', pattern: /\b(faina|făină|griu|grâu|secara|secară|orz|ovaz|ovăz|alac|kamut|griș|gris|semolina|malț|malt|bere|paine|pâine|toast|croissant|covrigi|biscuiti|biscuiți|pizza|paste|macaroane|spaghete|tagliatelle|spatzle|spele|crutoane|pesmet|panura|panko|cereale|wheat|flour|gluten|breadcrumb|semolino)\b/i },
+  { alergen: 'A01', pattern: /\b(faina|făină|griu|grâu|secara|secară|orz|ovaz|ovăz|alac|kamut|griș|gris|semolina|malț|malt|bere|paine|pâine|toast|croissant|covrigi|biscuiti|biscuiți|pizza|paste|macaroane|spaghete|tagliatelle|spaetzle|crutoane|pesmet|panura|panko|cereale|wheat|flour|gluten|breadcrumb|semolino)\b/i },
   // Ouă
-  { alergen: 'A03', pattern: /\b(ou|ouă|oua|albus|albus|galbenuș|galbenus|meringue|maioneza|maioneză|hollandaise|bearnaise|custard|ou\s+de\s+gaina|eggs?|egg)\b/i },
+  { alergen: 'A03', pattern: /\b(ou|ouă|oua|albuș|albus|gălbenuș|galbenus|meringue|maioneza|maioneză|hollandaise|bearnaise|custard|ou\s+de\s+gaina|eggs?|egg)\b/i },
   // Lapte/lactate
   { alergen: 'A07', pattern: /\b(lapte|smantana|smântână|frisca|frișcă|unt|branza|brânză|cascaval|cașcaval|iaurt|yogurt|crema\s+de\s+lapte|parmezan|mozzarella|camembert|brie|ricotta|mascarpone|ghee|lactoza|lactoză|whey|casein|zer|telemea|urda|urdă|caș|cas)\b/i },
   // Pește

@@ -239,13 +239,13 @@ export default function HACCPPage() {
                                   onChange={e => handleCompletareChange(item.id, 'conform', e.target.checked)}
                                   className="w-4 h-4"
                                 />
-                                <span className={c.conform !== false ? 'text-green-700 font-semibold' : 'text-red-700 font-semibold'}>
-                                  {c.conform !== false ? '✅ Conform' : '❌ Neconform'}
+                                <span className={(c.conform !== false) ? 'text-green-700 font-semibold' : 'text-red-700 font-semibold'}>
+                                  {(c.conform !== false) ? '✅ Conform' : '❌ Neconform'}
                                 </span>
                               </label>
                             </div>
                           </div>
-                          {c.conform === false && (
+                          {(c.conform === false) && (
                             <div className="mb-2">
                               <label className="text-xs text-gray-600">Acțiune luată</label>
                               <input
