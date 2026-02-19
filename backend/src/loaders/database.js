@@ -22,12 +22,19 @@ export async function initDatabase() {
             driver: sqlite3.Database
         });
 
-        // WAL Mode for massive concurrency
-        await db.run('PRAGMA journal_mode = WAL;');
-        await db.run('PRAGMA synchronous = NORMAL;');
-        await db.run('PRAGMA foreign_keys = ON;');
+        // Performance optimizations for SQLite
+        await db.run('PRAGMA journal_mode = WAL;'); // Write-Ahead Logging for massive concurrency
+        await db.run('PRAGMA synchronous = NORMAL;'); // Balance between safety and speed
+        await db.run('PRAGMA foreign_keys = ON;'); // Enforce foreign key constraints
+        await db.run('PRAGMA cache_size = -64000;'); // 64MB cache for better performance
+        await db.run('PRAGMA temp_store = MEMORY;'); // Store temp tables in memory
+        await db.run('PRAGMA mmap_size = 268435456;'); // 256MB memory-mapped I/O
+        await db.run('PRAGMA page_size = 4096;'); // Optimal page size
+        await db.run('PRAGMA busy_timeout = 5000;'); // 5 second timeout for locked database
+        await db.run('PRAGMA auto_vacuum = INCREMENTAL;'); // Better space management
+        await db.run('PRAGMA locking_mode = NORMAL;'); // Allow multiple processes
 
-        logger.info(`✅ NOVA v10.0 Database Initialized at: ${DB_PATH} [WAL MODE]`);
+        logger.info(`✅ NOVA v10.0 Database Initialized at: ${DB_PATH} [WAL MODE + Performance Optimized]`);
 
         // Ensure Audit Log table exists (Critical for NOVA compliance)
         await db.run(`
