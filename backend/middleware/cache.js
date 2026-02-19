@@ -6,6 +6,17 @@
 const cache = new Map();
 const cacheTimestamps = new Map();
 
+// Store active TTLs for cleanup
+const activeTTLs = new Set();
+
+/**
+ * Register a TTL value for cleanup consideration
+ * @param {number} ttl - Time to live in seconds
+ */
+function registerTTL(ttl) {
+  activeTTLs.add(ttl);
+}
+
 /**
  * Cache middleware factory
  * @param {number} ttl - Time to live in seconds (default: 60 seconds)
@@ -13,6 +24,8 @@ const cacheTimestamps = new Map();
  * @returns {function} Express middleware function
  */
 export function cacheMiddleware(ttl = 60, keyGenerator = null) {
+  registerTTL(ttl);
+  
   return (req, res, next) => {
     // Only cache GET requests
     if (req.method !== 'GET') {
@@ -97,9 +110,12 @@ export function getCacheStats() {
 }
 
 // Periodic cleanup of expired entries (runs every 5 minutes)
+// Uses the maximum TTL from registered values to determine cleanup threshold
 setInterval(() => {
   const now = Date.now();
-  const maxAge = 300 * 1000; // 5 minutes in milliseconds
+  // Use the maximum registered TTL, or default to 5 minutes
+  const maxTTL = activeTTLs.size > 0 ? Math.max(...activeTTLs) : 300;
+  const maxAge = maxTTL * 1000; // Convert to milliseconds
   
   for (const [key, timestamp] of cacheTimestamps.entries()) {
     if (now - timestamp > maxAge) {

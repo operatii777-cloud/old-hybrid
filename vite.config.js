@@ -27,8 +27,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    // Disable sourcemaps in production for better performance
-    sourcemap: false,
+    // Use hidden sourcemaps for production debugging without bundle size impact
+    sourcemap: 'hidden',
     // Enable minification
     minify: 'terser',
     // Terser options for aggressive minification

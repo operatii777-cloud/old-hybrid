@@ -40,9 +40,22 @@ app.use(compression({
   }
 }));
 
-// Middleware - Optimized for performance
+// Middleware - Optimized for performance and security
 app.use(helmet({
-  contentSecurityPolicy: false, // Allow inline scripts for SPA
+  // Configure CSP properly for SPA instead of disabling it
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"], // Required for Vite dev mode and inline scripts
+      styleSrc: ["'self'", "'unsafe-inline'"], // Required for inline styles
+      imgSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
   crossOriginEmbedderPolicy: false,
   // Enable DNS prefetching for better performance
   dnsPrefetchControl: { allow: true },
@@ -66,14 +79,22 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' })); // Add size limit for performance
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files with aggressive caching for better performance
+// Static files with optimized caching strategy
 const projectRoot = path.resolve(__dirname, '..');
 const frontendBuild = path.resolve(projectRoot, process.env.FRONTEND_BUILD || 'frontend/dist');
+
+// Cache static assets with content hashes for 1 year
 app.use(express.static(frontendBuild, {
   maxAge: '1y', // Cache static assets for 1 year
   immutable: true, // Assets with hash never change
   etag: true,
   lastModified: true,
+  setHeaders: (res, filePath) => {
+    // Don't cache HTML files - they should always be fresh
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    }
+  },
 }));
 
 // Health check
