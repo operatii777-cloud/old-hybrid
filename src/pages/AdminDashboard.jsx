@@ -34,6 +34,8 @@ import IstoricTransferPage from '../components/IstoricTransferPage';
 import IstoricReturPage from '../components/IstoricReturPage';
 import SetariPage from '../components/SetariPage';
 import SincronizarePage from '../components/SincronizarePage';
+import ReservationsManagement from '../components/ReservationsManagement';
+import ReportingDashboard from '../components/ReportingDashboard';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -161,6 +163,10 @@ export default function AdminDashboard() {
         return <SetariPage />;
       case 'sincronizare':
         return <SincronizarePage />;
+      case 'rezervari':
+        return <ReservationsManagement />;
+      case 'reporting-dashboard':
+        return <ReportingDashboard />;
       case 'rapoarte':
         return <div className="p-8"><h2 className="text-2xl font-bold">Rapoarte</h2><p>Interfață rapoarte în dezvoltare...</p></div>;
       case 'descarcare':
@@ -399,6 +405,10 @@ export default function AdminDashboard() {
             </button>
             {expandedMenu === 'rapoarte' && (
               <div className="bg-yellow-50" data-testid="rapoarte-submenu">
+                <button onClick={() => handleMenuClick('reporting-dashboard')}
+                  className={`w-full p-2 pl-6 text-left text-sm hover:bg-yellow-100 text-black ${activeMenuItem === 'reporting-dashboard' ? 'bg-yellow-300 font-bold' : ''}`}>
+                  📊 Dashboard Rapoarte
+                </button>
                 <button onClick={() => handleMenuClick('lista-facturi')}
                   className={`w-full p-2 pl-6 text-left text-sm hover:bg-yellow-100 text-black ${activeMenuItem === 'lista-facturi' ? 'bg-yellow-300 font-bold' : ''}`}>
                   Lista facturi
@@ -474,6 +484,14 @@ export default function AdminDashboard() {
             className={`w-full p-3 text-left font-bold hover:bg-gray-300 border-b border-gray-300 text-black ${activeMenuItem === 'extended-features' ? 'bg-gray-400' : 'bg-gray-200'}`}
           >
             🚀 Funcționalități Extinse
+          </button>
+
+          {/* Reservations */}
+          <button
+            onClick={() => handleMenuClick('rezervari')}
+            className={`w-full p-3 text-left font-bold hover:bg-gray-300 border-b border-gray-300 text-black ${activeMenuItem === 'rezervari' ? 'bg-gray-400' : 'bg-gray-200'}`}
+          >
+            📅 Gestionare Rezervări
           </button>
         </div>
 

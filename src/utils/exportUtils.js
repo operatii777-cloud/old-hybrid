@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 
 /**
  * Export data to CSV
@@ -35,44 +35,99 @@ export function exportToCSV(data, filename = 'export.csv', headers = null) {
 }
 
 /**
- * Export data to Excel
+ * Export data to Excel using ExcelJS (secure alternative to xlsx)
  */
-export function exportToExcel(data, filename = 'export.xlsx', sheetName = 'Sheet1') {
+export async function exportToExcel(data, filename = 'export.xlsx', sheetName = 'Sheet1') {
   if (!data || data.length === 0) {
     console.error('No data to export');
     return;
   }
   
-  // Create worksheet from data
-  const worksheet = XLSX.utils.json_to_sheet(data);
-  
-  // Create workbook
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-  
-  // Generate Excel file and download
-  XLSX.writeFile(workbook, filename);
+  try {
+    // Create workbook and worksheet
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(sheetName);
+    
+    // Get headers from first object
+    const headers = Object.keys(data[0]);
+    worksheet.columns = headers.map(header => ({
+      header: header,
+      key: header,
+      width: 15
+    }));
+    
+    // Add rows
+    data.forEach(row => {
+      worksheet.addRow(row);
+    });
+    
+    // Style header row
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getRow(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFE0E0E0' }
+    };
+    
+    // Generate buffer and download
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { 
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+    });
+    downloadBlob(blob, filename);
+  } catch (error) {
+    console.error('Error exporting to Excel:', error);
+  }
 }
 
 /**
- * Export multiple sheets to Excel
+ * Export multiple sheets to Excel using ExcelJS
  */
-export function exportToExcelMultiSheet(sheets, filename = 'export.xlsx') {
+export async function exportToExcelMultiSheet(sheets, filename = 'export.xlsx') {
   if (!sheets || sheets.length === 0) {
     console.error('No sheets to export');
     return;
   }
   
-  const workbook = XLSX.utils.book_new();
-  
-  sheets.forEach(({ data, name }) => {
-    if (data && data.length > 0) {
-      const worksheet = XLSX.utils.json_to_sheet(data);
-      XLSX.utils.book_append_sheet(workbook, worksheet, name);
-    }
-  });
-  
-  XLSX.writeFile(workbook, filename);
+  try {
+    const workbook = new ExcelJS.Workbook();
+    
+    sheets.forEach(({ data, name }) => {
+      if (data && data.length > 0) {
+        const worksheet = workbook.addWorksheet(name);
+        
+        // Get headers from first object
+        const headers = Object.keys(data[0]);
+        worksheet.columns = headers.map(header => ({
+          header: header,
+          key: header,
+          width: 15
+        }));
+        
+        // Add rows
+        data.forEach(row => {
+          worksheet.addRow(row);
+        });
+        
+        // Style header row
+        worksheet.getRow(1).font = { bold: true };
+        worksheet.getRow(1).fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFE0E0E0' }
+        };
+      }
+    });
+    
+    // Generate buffer and download
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { 
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+    });
+    downloadBlob(blob, filename);
+  } catch (error) {
+    console.error('Error exporting to Excel:', error);
+  }
 }
 
 /**
@@ -96,7 +151,7 @@ export function exportOrdersToCSV(orders, filename = 'comenzi.csv') {
 /**
  * Export orders to Excel
  */
-export function exportOrdersToExcel(orders, filename = 'comenzi.xlsx') {
+export async function exportOrdersToExcel(orders, filename = 'comenzi.xlsx') {
   const data = orders.map(order => ({
     'ID Comandă': order.id,
     'Masă': order.masa_id,
@@ -108,7 +163,7 @@ export function exportOrdersToExcel(orders, filename = 'comenzi.xlsx') {
     'Tip Plată': order.tip_plata
   }));
   
-  exportToExcel(data, filename, 'Comenzi');
+  await exportToExcel(data, filename, 'Comenzi');
 }
 
 /**
@@ -131,7 +186,7 @@ export function exportProductsToCSV(products, filename = 'produse.csv') {
 /**
  * Export products to Excel
  */
-export function exportProductsToExcel(products, filename = 'produse.xlsx') {
+export async function exportProductsToExcel(products, filename = 'produse.xlsx') {
   const data = products.map(product => ({
     'Cod': product.cod_prod,
     'Denumire': product.den_prod,
@@ -142,13 +197,13 @@ export function exportProductsToExcel(products, filename = 'produse.xlsx') {
     'Categorie': product.categorie
   }));
   
-  exportToExcel(data, filename, 'Produse');
+  await exportToExcel(data, filename, 'Produse');
 }
 
 /**
  * Export inventory to Excel with multiple sheets
  */
-export function exportInventoryToExcel(inventory, filename = 'inventar.xlsx') {
+export async function exportInventoryToExcel(inventory, filename = 'inventar.xlsx') {
   const sheets = [
     {
       name: 'Materii Prime',
@@ -176,7 +231,7 @@ export function exportInventoryToExcel(inventory, filename = 'inventar.xlsx') {
     }
   ];
   
-  exportToExcelMultiSheet(sheets, filename);
+  await exportToExcelMultiSheet(sheets, filename);
 }
 
 /**
@@ -212,9 +267,9 @@ export function exportAgGridToCSV(gridApi, filename = 'export.csv') {
 }
 
 /**
- * Export AG Grid data to Excel
+ * Export AG Grid data to Excel using ExcelJS
  */
-export function exportAgGridToExcel(gridApi, filename = 'export.xlsx') {
+export async function exportAgGridToExcel(gridApi, filename = 'export.xlsx') {
   if (!gridApi) {
     console.error('Grid API not available');
     return;
@@ -228,5 +283,5 @@ export function exportAgGridToExcel(gridApi, filename = 'export.xlsx') {
     }
   });
   
-  exportToExcel(data, filename);
+  await exportToExcel(data, filename);
 }
