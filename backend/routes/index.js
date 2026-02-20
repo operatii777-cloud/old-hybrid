@@ -38,6 +38,11 @@ import experienceEngineRoutes from './admin/experience-engine.js';
 import digitalIdentityRoutes from './admin/digital-identity.js';
 import paymentOrchestrationRoutes from './admin/payment-orchestration.js';
 import aiAssistantRoutes from './admin/ai-assistant.js';
+import selfHealingRoutes from './admin/self-healing.js';
+import franchiseRoutes from './admin/franchise.js';
+import apiEconomyRoutes from './admin/api-economy.js';
+import globalDataNetworkRoutes from './admin/global-data-network.js';
+import superappRoutes from './admin/superapp.js';
 import aiRoutes from './ai.js';
 
 export function setupRoutes(app) {
@@ -88,6 +93,11 @@ export function setupRoutes(app) {
   app.use('/api/digital-identity', digitalIdentityRoutes);
   app.use('/api/payment-orchestration', paymentOrchestrationRoutes);
   app.use('/api/ai-assistant', aiAssistantRoutes);
+  app.use('/api/self-healing', selfHealingRoutes);
+  app.use('/api/franchise', franchiseRoutes);
+  app.use('/api/api-economy', apiEconomyRoutes);
+  app.use('/api/global-data-network', globalDataNetworkRoutes);
+  app.use('/api/superapp', superappRoutes);
   app.use('/api/ai', aiRoutes);
 
   // Not found
