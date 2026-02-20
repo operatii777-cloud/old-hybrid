@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { openai, AI_MODEL } from '../shared/openaiClient';
 
-const SCHEMA_PATH = path.resolve(__dirname, '../../../../packages/db/prisma/schema.prisma');
+const SCHEMA_PATH = path.resolve(__dirname, '../../prisma/schema.prisma');
 
 export interface SchemaChangeResult {
   definition:    string;
