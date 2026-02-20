@@ -58,6 +58,11 @@ const PaymentOrchestrationPage = lazy(() => import('../components/PaymentOrchest
 const DeliveryDispatchPage = lazy(() => import('../components/DeliveryDispatchPage'));
 const AIAssistantPage = lazy(() => import('../components/AIAssistantPage'));
 const HOSAIEngine = lazy(() => import('../../horeca-ai-unified-engine'));
+const SelfHealingPage = lazy(() => import('../components/SelfHealingPage'));
+const FranchisePage = lazy(() => import('../components/FranchisePage'));
+const ApiEconomyPage = lazy(() => import('../components/ApiEconomyPage'));
+const GlobalDataNetworkPage = lazy(() => import('../components/GlobalDataNetworkPage'));
+const SuperappPage = lazy(() => import('../components/SuperappPage'));
 
 // Loading component for better UX during lazy loading
 const ComponentLoader = () => (
@@ -250,6 +255,16 @@ export default function AdminDashboard() {
           return <AIAssistantPage />;
         case 'hos-ai-engine':
           return <HOSAIEngine />;
+        case 'self-healing':
+          return <SelfHealingPage />;
+        case 'franchise':
+          return <FranchisePage />;
+        case 'api-economy':
+          return <ApiEconomyPage />;
+        case 'global-data-network':
+          return <GlobalDataNetworkPage />;
+        case 'superapp':
+          return <SuperappPage />;
         default:
           return <MainDashboard onMenuSelect={setActiveMenuItem} />;
       }
@@ -739,6 +754,51 @@ export default function AdminDashboard() {
             className={`w-full p-3 text-left font-bold hover:bg-purple-100 border-b border-gray-300 text-black ${activeMenuItem === 'hos-ai-engine' ? 'bg-purple-300' : 'bg-gray-200'}`}
           >
             🧠 HOS AI Engine
+          </button>
+
+          {/* Separator - Infrastructură & Ecosistem */}
+          <div className="px-3 py-1 text-xs font-bold text-gray-500 bg-gray-100 border-b border-gray-300 uppercase tracking-wider">
+            ⚙️ Infrastructură &amp; Ecosistem
+          </div>
+
+          {/* Self-Healing Infrastructure */}
+          <button
+            onClick={() => handleMenuClick('self-healing')}
+            className={`w-full p-3 text-left font-bold hover:bg-emerald-100 border-b border-gray-300 text-black ${activeMenuItem === 'self-healing' ? 'bg-emerald-300' : 'bg-gray-200'}`}
+          >
+            🔧 Infrastructură Auto-Repair
+          </button>
+
+          {/* Franchise Domination System */}
+          <button
+            onClick={() => handleMenuClick('franchise')}
+            className={`w-full p-3 text-left font-bold hover:bg-amber-100 border-b border-gray-300 text-black ${activeMenuItem === 'franchise' ? 'bg-amber-300' : 'bg-gray-200'}`}
+          >
+            👑 Sistem Franciză
+          </button>
+
+          {/* API Economy Mode */}
+          <button
+            onClick={() => handleMenuClick('api-economy')}
+            className={`w-full p-3 text-left font-bold hover:bg-indigo-100 border-b border-gray-300 text-black ${activeMenuItem === 'api-economy' ? 'bg-indigo-300' : 'bg-gray-200'}`}
+          >
+            🔌 Economie API
+          </button>
+
+          {/* Global Data Network Effect */}
+          <button
+            onClick={() => handleMenuClick('global-data-network')}
+            className={`w-full p-3 text-left font-bold hover:bg-violet-100 border-b border-gray-300 text-black ${activeMenuItem === 'global-data-network' ? 'bg-violet-300' : 'bg-gray-200'}`}
+          >
+            🌐 Rețea Globală de Date
+          </button>
+
+          {/* Hospitality Superapp Mode */}
+          <button
+            onClick={() => handleMenuClick('superapp')}
+            className={`w-full p-3 text-left font-bold hover:bg-rose-100 border-b border-gray-300 text-black ${activeMenuItem === 'superapp' ? 'bg-rose-300' : 'bg-gray-200'}`}
+          >
+            📱 Hospitality Superapp
           </button>
         </div>
 
