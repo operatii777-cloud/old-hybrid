@@ -4,6 +4,8 @@ export { matchIngredients }                      from './src/matching/ingredient
 export { detectAllergensForIngredient,
          calculateRecipeAllergens }              from './src/allergens/allergenDetector';
 export { suggestProductPrice }                   from './src/pricing/priceSuggestion';
+export { lookupMarketPrice,
+         marketPriceInUnit }                     from './src/pricing/marketPrices';
 export { generateProductPhoto }                  from './src/photos/photoGenerator';
 export { createProductFromRecipe }               from './src/db/productCreator';
 export { executeAiDbOperation,
@@ -19,6 +21,7 @@ export type { ParsedDocument, SourceType }       from './src/ingestion/documentP
 export type { ExtractionResult }                 from './src/extraction/recipeExtractor';
 export type { MatchResult, MatchStatus }         from './src/matching/ingredientMatcher';
 export type { AllergenDetectionResult }          from './src/allergens/allergenDetector';
-export type { PricingSuggestion }                from './src/pricing/priceSuggestion';
+export type { PricingSuggestion,
+              RawIngredientInput }             from './src/pricing/priceSuggestion';
 export type { AuditIssue, AuditReport }          from './src/audit/dbAuditor';
 export type { RepairResult }                     from './src/repair/autoRepair';

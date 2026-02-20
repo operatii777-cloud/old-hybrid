@@ -103,7 +103,10 @@ program
           matches.filter(m => m.matchedIngredient !== null).map(m => ({
             ingredientId: m.matchedIngredient!.id, quantity: m.quantity, unit: m.unit,
           })),
-          recipe.servings, foodCost
+          recipe.servings,
+          foodCost,
+          // Pass raw extracted ingredients so market-price fallback works for NEW items
+          recipe.ingredients.map(i => ({ name: i.name, quantity: i.quantity, unit: i.unit }))
         );
 
         if (!opts.dryRun) {
@@ -111,9 +114,26 @@ program
             .catch(() => ({ url: '', thumbnailUrl: '' }));
           const result = await createProductFromRecipe(opts.tenant, recipe, matches, pricing, photo.url, opts.user);
           results.push({ ...result, productName: recipe.productName });
-          s.succeed(`  ✔ ${recipe.productName} — preț sugerat: ${(pricing.suggestedPriceNormal / 100).toFixed(2)} RON`);
+          const priceLabel = pricing.suggestedPriceNormal > 0
+            ? `${(pricing.suggestedPriceNormal / 100).toFixed(2)} RON`
+            : chalk.yellow('preț indisponibil (lipsă date furnizori)');
+          const fallbackNote = pricing.usedMarketPriceFallback ? chalk.yellow(' ⚠ prețuri estimate Metro/Selgros/Lidl') : '';
+          s.succeed(`  ✔ ${recipe.productName} — preț sugerat: ${priceLabel}${fallbackNote}`);
         } else {
-          s.succeed(`  [DRY-RUN] ${recipe.productName} — preț sugerat: ${(pricing.suggestedPriceNormal / 100).toFixed(2)} RON`);
+          const priceLabel = pricing.suggestedPriceNormal > 0
+            ? `${(pricing.suggestedPriceNormal / 100).toFixed(2)} RON`
+            : chalk.yellow('preț indisponibil (lipsă date furnizori)');
+          const fallbackNote = pricing.usedMarketPriceFallback ? chalk.yellow(' ⚠ prețuri estimate Metro/Selgros/Lidl') : '';
+          s.succeed(`  [DRY-RUN] ${recipe.productName} — preț sugerat: ${priceLabel}${fallbackNote}`);
+        }
+
+        // Show cost breakdown if market-price fallback was used
+        if (pricing.usedMarketPriceFallback && pricing.breakdown.length > 0) {
+          for (const item of pricing.breakdown) {
+            if (item.marketPriceNote) {
+              console.log(chalk.gray(`       • ${item.name}: ${(item.costCents / 100).toFixed(2)} RON — ${item.marketPriceNote}`));
+            }
+          }
         }
       }
 
