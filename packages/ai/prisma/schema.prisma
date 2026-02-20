@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Protected tables (never modified via AI) ─────────────────────────────
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(cuid())
+  tenantId  String
+  email     String
+  name      String?
+  role      String   @default("STAFF")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  tenantId  String
+  key       String   @unique
+  name      String
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+}
+
+// ── Menu / catalog ────────────────────────────────────────────────────────
+
+model Category {
+  id        String    @id @default(cuid())
+  tenantId  String
+  name      String
+  sortOrder Int       @default(0)
+  deletedAt DateTime?
+  products  Product[]
+
+  @@index([tenantId])
+}
+
+model Product {
+  id            String    @id @default(cuid())
+  tenantId      String
+  categoryId    String
+  name          String
+  nameEn        String?
+  description   String    @default("")
+  descriptionEn String?
+  imageUrl      String    @default("")
+  thumbnailUrl  String?
+  priceNormal   Int       @default(0)
+  priceVip      Int       @default(0)
+  priceDiscount Int       @default(0)
+  vatRate       Int       @default(9)
+  isActive      Boolean   @default(false)
+  allergens     String[]
+  type          String    @default("FOOD")
+  orderCount    Int       @default(0)
+  marginCents   Int       @default(0)
+  sortOrder     Int       @default(0)
+  locationId    String?
+  deletedAt     DateTime?
+
+  category Category @relation(fields: [categoryId], references: [id])
+  recipe   Recipe?
+
+  @@index([tenantId])
+}
+
+model Ingredient {
+  id               String             @id @default(cuid())
+  tenantId         String
+  code             String
+  name             String
+  unit             String
+  allergens        String[]
+  avgWeightedPrice Int?
+  costPrice        Int?
+  deletedAt        DateTime?
+
+  recipeIngredients RecipeIngredient[]
+
+  @@index([tenantId])
+}
+
+model Recipe {
+  id           String @id @default(cuid())
+  tenantId     String
+  productId    String @unique
+  servings     Int    @default(1)
+  prepTimeMins Int    @default(0)
+
+  product           Product            @relation(fields: [productId], references: [id])
+  recipeIngredients RecipeIngredient[]
+
+  @@index([tenantId])
+}
+
+model RecipeIngredient {
+  id           String @id @default(cuid())
+  tenantId     String
+  recipeId     String
+  ingredientId String
+  quantity     Float
+  unit         String
+
+  recipe     Recipe     @relation(fields: [recipeId], references: [id])
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+
+  @@index([tenantId])
+}
+
+// ── Audit ─────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  tenantId  String
+  userId    String
+  action    String
+  model     String
+  recordId  String
+  newValue  String?
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+}
