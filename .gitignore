@@ -10,3 +10,6 @@ coverage/
 *.tmp
 tmp/
 package-lock.json
+backups/
+data/*.db-shm
+data/*.db-wal

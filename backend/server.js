@@ -1,4 +1,6 @@
 import express from 'express';
+import { createServer } from 'http';
+import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -13,17 +15,34 @@ import { setupSyncService } from './services/sync-service.js';
 import { setupBackupService } from './services/backup-service.js';
 import { logger } from './utils/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { httpLogger } from './middleware/logger.js';
 import { performanceMonitor, setupPerformanceEndpoints } from './middleware/performance.js';
+import { setupKdsSocket } from './socket/kds.js';
+import { config } from './config/env.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Load environment
 const env = process.env.NODE_ENV || 'local';
 dotenv.config({ path: `.env.${env}` });
+dotenv.config({ path: '.env.local' }); // fallback
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const isLocal = process.env.NODE_ENV === 'local';
+const httpServer = createServer(app);
+const io = new SocketIOServer(httpServer, {
+  cors: { origin: '*', methods: ['GET', 'POST'] },
+});
+const PORT = config.port;
+const isLocal = process.env.NODE_ENV === 'local' || process.env.NODE_ENV === 'development';
+
+// Attach io to app so routes can access it via req.app.get('io')
+app.set('io', io);
+
+// Real-time KDS
+setupKdsSocket(io);
+
+// HTTP request logging (Morgan via Winston)
+app.use(httpLogger);
 
 // Performance monitoring (early in the middleware stack)
 app.use(performanceMonitor);
@@ -81,7 +100,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static files with optimized caching strategy
 const projectRoot = path.resolve(__dirname, '..');
-const frontendBuild = path.resolve(projectRoot, process.env.FRONTEND_BUILD || 'frontend/dist');
+const frontendBuild = path.resolve(projectRoot, config.frontendBuild);
 
 // Cache static assets with content hashes for 1 year
 app.use(express.static(frontendBuild, {
@@ -102,7 +121,9 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     environment: env,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    database: 'sqlite',
+    version: process.env.npm_package_version || '1.0.0',
   });
 });
 
@@ -140,7 +161,7 @@ async function initialize() {
     logger.info('Database initialized');
 
     // Setup services
-    if (process.env.CLOUD_ENABLED === 'true') {
+    if (config.cloudEnabled) {
       setupSyncService();
       logger.info('Cloud sync enabled');
     }
@@ -148,8 +169,8 @@ async function initialize() {
     setupBackupService();
     logger.info('Backup service started');
 
-    // Start server
-    app.listen(PORT, () => {
+    // Start server (use httpServer so Socket.IO is attached)
+    httpServer.listen(PORT, () => {
       logger.info(`✅ Restaurant App running on http://localhost:${PORT}`);
       if (isLocal) {
         logger.info(`🍽️  POS Mode - Local Database`);

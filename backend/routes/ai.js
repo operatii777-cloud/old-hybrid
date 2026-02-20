@@ -157,7 +157,7 @@ router.post('/import', upload.single('file'), async (req, res) => {
       const pricing = await suggestProductPrice(
         tenantId,
         matches.filter(m => m.matchedIngredient !== null).map(m => ({
-          ingredientId: m.matchedIngredient!.id, quantity: m.quantity, unit: m.unit,
+          ingredientId: m.matchedIngredient.id, quantity: m.quantity, unit: m.unit,
         })),
         recipe.servings,
         foodCostPct,

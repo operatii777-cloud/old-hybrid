@@ -5,14 +5,16 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node backend/server.js",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "tsx backend/server.js",
+    "server": "node backend/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:integration": "jest tests/backend",
+    "test:db": "node -e \"import('./backend/database/init-db.js').then(m=>m.initDatabase()).then(()=>{ console.log('✅ DB OK'); process.exit(0); }).catch(e=>{ console.error(e); process.exit(1); })\""
   },
   "keywords": [
     "restaurant",
@@ -41,6 +43,7 @@
     "jspdf": "^4.2.0",
     "jspdf-autotable": "^5.0.7",
     "leaflet": "^1.9.4",
+    "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "node-cron": "^4.2.1",
     "nodemailer": "^7.0.13",
@@ -49,6 +52,7 @@
     "react-dom": "^18.3.1",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^6.22.0",
+    "socket.io": "^4.8.3",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "twilio": "^4.20.1",
