@@ -44,6 +44,19 @@ const TrasabilitatePage = lazy(() => import('../components/TrasabilitatePage'));
 const MateriiPrimePage = lazy(() => import('../components/MateriiPrimePage'));
 const SubRetetePage = lazy(() => import('../components/SubRetetePage'));
 const ReportingDashboard = lazy(() => import('../components/ReportingDashboard'));
+const RevenueSciencePage = lazy(() => import('../components/RevenueSciencePage'));
+const RiskEnginePage = lazy(() => import('../components/RiskEnginePage'));
+const FinancialControlPage = lazy(() => import('../components/FinancialControlPage'));
+const WeatherPredictionPage = lazy(() => import('../components/WeatherPredictionPage'));
+const LaborAIPage = lazy(() => import('../components/LaborAIPage'));
+const DarkKitchenPage = lazy(() => import('../components/DarkKitchenPage'));
+const HQWarRoomPage = lazy(() => import('../components/HQWarRoomPage'));
+const SupplyChainPage = lazy(() => import('../components/SupplyChainPage'));
+const ExperienceEnginePage = lazy(() => import('../components/ExperienceEnginePage'));
+const DigitalIdentityPage = lazy(() => import('../components/DigitalIdentityPage'));
+const PaymentOrchestrationPage = lazy(() => import('../components/PaymentOrchestrationPage'));
+const DeliveryDispatchPage = lazy(() => import('../components/DeliveryDispatchPage'));
+const AIAssistantPage = lazy(() => import('../components/AIAssistantPage'));
 
 // Loading component for better UX during lazy loading
 const ComponentLoader = () => (
@@ -208,6 +221,32 @@ export default function AdminDashboard() {
           return <div className="p-8"><h2 className="text-2xl font-bold">Descărcare</h2><p>Interfață descărcare în dezvoltare...</p></div>;
         case 'istoric':
           return <div className="p-8"><h2 className="text-2xl font-bold">Istoric</h2><p>Interfață istoric în dezvoltare...</p></div>;
+        case 'revenue-science':
+          return <RevenueSciencePage />;
+        case 'risk-engine':
+          return <RiskEnginePage />;
+        case 'financial-control':
+          return <FinancialControlPage />;
+        case 'weather-prediction':
+          return <WeatherPredictionPage />;
+        case 'labor-ai':
+          return <LaborAIPage />;
+        case 'dark-kitchen':
+          return <DarkKitchenPage />;
+        case 'hq-warroom':
+          return <HQWarRoomPage />;
+        case 'supply-chain':
+          return <SupplyChainPage />;
+        case 'experience-engine':
+          return <ExperienceEnginePage />;
+        case 'digital-identity':
+          return <DigitalIdentityPage />;
+        case 'payment-orchestration':
+          return <PaymentOrchestrationPage />;
+        case 'delivery-dispatch':
+          return <DeliveryDispatchPage />;
+        case 'ai-assistant':
+          return <AIAssistantPage />;
         default:
           return <MainDashboard onMenuSelect={setActiveMenuItem} />;
       }
@@ -570,6 +609,125 @@ export default function AdminDashboard() {
             className={`w-full p-3 text-left font-bold hover:bg-gray-300 border-b border-gray-300 text-black ${activeMenuItem === 'rezervari' ? 'bg-gray-400' : 'bg-gray-200'}`}
           >
             📅 Gestionare Rezervări
+          </button>
+
+          {/* Separator - AI & Intelligence */}
+          <div className="px-3 py-1 text-xs font-bold text-gray-500 bg-gray-100 border-b border-gray-300 uppercase tracking-wider">
+            🤖 AI &amp; Inteligență
+          </div>
+
+          {/* Revenue Science */}
+          <button
+            onClick={() => handleMenuClick('revenue-science')}
+            className={`w-full p-3 text-left font-bold hover:bg-orange-100 border-b border-gray-300 text-black ${activeMenuItem === 'revenue-science' ? 'bg-orange-300' : 'bg-gray-200'}`}
+          >
+            📈 Revenue Science
+          </button>
+
+          {/* Risk Engine */}
+          <button
+            onClick={() => handleMenuClick('risk-engine')}
+            className={`w-full p-3 text-left font-bold hover:bg-red-100 border-b border-gray-300 text-black ${activeMenuItem === 'risk-engine' ? 'bg-red-300' : 'bg-gray-200'}`}
+          >
+            🛡️ Motor de Risc
+          </button>
+
+          {/* Financial Control */}
+          <button
+            onClick={() => handleMenuClick('financial-control')}
+            className={`w-full p-3 text-left font-bold hover:bg-teal-100 border-b border-gray-300 text-black ${activeMenuItem === 'financial-control' ? 'bg-teal-300' : 'bg-gray-200'}`}
+          >
+            💼 Control Financiar
+          </button>
+
+          {/* Labor AI */}
+          <button
+            onClick={() => handleMenuClick('labor-ai')}
+            className={`w-full p-3 text-left font-bold hover:bg-indigo-100 border-b border-gray-300 text-black ${activeMenuItem === 'labor-ai' ? 'bg-indigo-300' : 'bg-gray-200'}`}
+          >
+            👥 Optimizare Personal AI
+          </button>
+
+          {/* Weather Prediction */}
+          <button
+            onClick={() => handleMenuClick('weather-prediction')}
+            className={`w-full p-3 text-left font-bold hover:bg-blue-100 border-b border-gray-300 text-black ${activeMenuItem === 'weather-prediction' ? 'bg-blue-300' : 'bg-gray-200'}`}
+          >
+            🌤️ Predicție Meteo
+          </button>
+
+          {/* Separator - Scale */}
+          <div className="px-3 py-1 text-xs font-bold text-gray-500 bg-gray-100 border-b border-gray-300 uppercase tracking-wider">
+            🏢 Scalare &amp; Rețea
+          </div>
+
+          {/* HQ War Room */}
+          <button
+            onClick={() => handleMenuClick('hq-warroom')}
+            className={`w-full p-3 text-left font-bold hover:bg-red-100 border-b border-gray-300 text-black ${activeMenuItem === 'hq-warroom' ? 'bg-red-300' : 'bg-gray-200'}`}
+          >
+            🎯 Centru Control HQ
+          </button>
+
+          {/* Dark Kitchen */}
+          <button
+            onClick={() => handleMenuClick('dark-kitchen')}
+            className={`w-full p-3 text-left font-bold hover:bg-purple-100 border-b border-gray-300 text-black ${activeMenuItem === 'dark-kitchen' ? 'bg-purple-300' : 'bg-gray-200'}`}
+          >
+            👻 Bucătărie Virtuală
+          </button>
+
+          {/* Supply Chain */}
+          <button
+            onClick={() => handleMenuClick('supply-chain')}
+            className={`w-full p-3 text-left font-bold hover:bg-green-100 border-b border-gray-300 text-black ${activeMenuItem === 'supply-chain' ? 'bg-green-300' : 'bg-gray-200'}`}
+          >
+            🔗 Lanț Aprovizionare
+          </button>
+
+          {/* Digital Identity */}
+          <button
+            onClick={() => handleMenuClick('digital-identity')}
+            className={`w-full p-3 text-left font-bold hover:bg-pink-100 border-b border-gray-300 text-black ${activeMenuItem === 'digital-identity' ? 'bg-pink-300' : 'bg-gray-200'}`}
+          >
+            🛂 Identitate Digitală
+          </button>
+
+          {/* Payment Orchestration */}
+          <button
+            onClick={() => handleMenuClick('payment-orchestration')}
+            className={`w-full p-3 text-left font-bold hover:bg-yellow-100 border-b border-gray-300 text-black ${activeMenuItem === 'payment-orchestration' ? 'bg-yellow-300' : 'bg-gray-200'}`}
+          >
+            💳 Orchestrare Plăți
+          </button>
+
+          {/* Experience Engine */}
+          <button
+            onClick={() => handleMenuClick('experience-engine')}
+            className={`w-full p-3 text-left font-bold hover:bg-cyan-100 border-b border-gray-300 text-black ${activeMenuItem === 'experience-engine' ? 'bg-cyan-300' : 'bg-gray-200'}`}
+          >
+            ✨ Motor Experiență IoT
+          </button>
+
+          {/* Separator - Operațiuni */}
+          <div className="px-3 py-1 text-xs font-bold text-gray-500 bg-gray-100 border-b border-gray-300 uppercase tracking-wider">
+            🚗 Operațiuni &amp; Livrări
+          </div>
+
+          {/* Delivery Dispatch Map */}
+          <button
+            onClick={() => handleMenuClick('delivery-dispatch')}
+            className={`w-full p-3 text-left font-bold hover:bg-blue-100 border-b border-gray-300 text-black ${activeMenuItem === 'delivery-dispatch' ? 'bg-blue-300' : 'bg-gray-200'}`}
+          >
+            🗺️ Dispatch Livrări (OSM)
+          </button>
+
+          {/* AI Assistant */}
+          <button
+            onClick={() => handleMenuClick('ai-assistant')}
+            className={`w-full p-3 text-left font-bold hover:bg-violet-100 border-b border-gray-300 text-black ${activeMenuItem === 'ai-assistant' ? 'bg-violet-300' : 'bg-gray-200'}`}
+          >
+            🤖 Asistent AI (Gratuit)
           </button>
         </div>
 

@@ -26,6 +26,18 @@ import reservationsRoutes from './admin/reservations.js';
 import vouchersRoutes from './admin/vouchers.js';
 import stocAlerteRoutes from './admin/stoc-alerte.js';
 import logisticaRoutes from './admin/logistica.js';
+import revenueScienceRoutes from './admin/revenue-science.js';
+import riskEngineRoutes from './admin/risk-engine.js';
+import financialControlRoutes from './admin/financial-control.js';
+import weatherRoutes from './admin/weather.js';
+import laborAiRoutes from './admin/labor-ai.js';
+import darkKitchenRoutes from './admin/dark-kitchen.js';
+import hqWarRoomRoutes from './admin/hq-warroom.js';
+import supplyChainRoutes from './admin/supply-chain.js';
+import experienceEngineRoutes from './admin/experience-engine.js';
+import digitalIdentityRoutes from './admin/digital-identity.js';
+import paymentOrchestrationRoutes from './admin/payment-orchestration.js';
+import aiAssistantRoutes from './admin/ai-assistant.js';
 
 export function setupRoutes(app) {
   // Auth
@@ -63,6 +75,18 @@ export function setupRoutes(app) {
   app.use('/api/vouchers', vouchersRoutes);
   app.use('/api/stoc', stocAlerteRoutes);
   app.use('/api/logistica', logisticaRoutes);
+  app.use('/api/revenue-science', revenueScienceRoutes);
+  app.use('/api/risk-engine', riskEngineRoutes);
+  app.use('/api/financial-control', financialControlRoutes);
+  app.use('/api/weather', weatherRoutes);
+  app.use('/api/labor-ai', laborAiRoutes);
+  app.use('/api/dark-kitchen', darkKitchenRoutes);
+  app.use('/api/hq-warroom', hqWarRoomRoutes);
+  app.use('/api/supply-chain', supplyChainRoutes);
+  app.use('/api/experience-engine', experienceEngineRoutes);
+  app.use('/api/digital-identity', digitalIdentityRoutes);
+  app.use('/api/payment-orchestration', paymentOrchestrationRoutes);
+  app.use('/api/ai-assistant', aiAssistantRoutes);
 
   // Not found
   app.use('/api/*', (req, res) => {
