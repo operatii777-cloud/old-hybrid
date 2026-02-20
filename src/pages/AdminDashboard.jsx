@@ -55,6 +55,8 @@ const SupplyChainPage = lazy(() => import('../components/SupplyChainPage'));
 const ExperienceEnginePage = lazy(() => import('../components/ExperienceEnginePage'));
 const DigitalIdentityPage = lazy(() => import('../components/DigitalIdentityPage'));
 const PaymentOrchestrationPage = lazy(() => import('../components/PaymentOrchestrationPage'));
+const DeliveryDispatchPage = lazy(() => import('../components/DeliveryDispatchPage'));
+const AIAssistantPage = lazy(() => import('../components/AIAssistantPage'));
 
 // Loading component for better UX during lazy loading
 const ComponentLoader = () => (
@@ -241,6 +243,10 @@ export default function AdminDashboard() {
           return <DigitalIdentityPage />;
         case 'payment-orchestration':
           return <PaymentOrchestrationPage />;
+        case 'delivery-dispatch':
+          return <DeliveryDispatchPage />;
+        case 'ai-assistant':
+          return <AIAssistantPage />;
         default:
           return <MainDashboard onMenuSelect={setActiveMenuItem} />;
       }
@@ -701,6 +707,27 @@ export default function AdminDashboard() {
             className={`w-full p-3 text-left font-bold hover:bg-cyan-100 border-b border-gray-300 text-black ${activeMenuItem === 'experience-engine' ? 'bg-cyan-300' : 'bg-gray-200'}`}
           >
             ✨ Motor Experiență IoT
+          </button>
+
+          {/* Separator - Operațiuni */}
+          <div className="px-3 py-1 text-xs font-bold text-gray-500 bg-gray-100 border-b border-gray-300 uppercase tracking-wider">
+            🚗 Operațiuni &amp; Livrări
+          </div>
+
+          {/* Delivery Dispatch Map */}
+          <button
+            onClick={() => handleMenuClick('delivery-dispatch')}
+            className={`w-full p-3 text-left font-bold hover:bg-blue-100 border-b border-gray-300 text-black ${activeMenuItem === 'delivery-dispatch' ? 'bg-blue-300' : 'bg-gray-200'}`}
+          >
+            🗺️ Dispatch Livrări (OSM)
+          </button>
+
+          {/* AI Assistant */}
+          <button
+            onClick={() => handleMenuClick('ai-assistant')}
+            className={`w-full p-3 text-left font-bold hover:bg-violet-100 border-b border-gray-300 text-black ${activeMenuItem === 'ai-assistant' ? 'bg-violet-300' : 'bg-gray-200'}`}
+          >
+            🤖 Asistent AI (Gratuit)
           </button>
         </div>
 
