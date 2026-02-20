@@ -1,4 +1,6 @@
 import Fuse from 'fuse.js';
+
+const AMBIGUITY_THRESHOLD = 0.1;
 import { openai } from '../shared/openaiClient';
 import { prisma } from '../shared/prismaClient';
 import { redis } from '../shared/redisClient';
@@ -83,7 +85,7 @@ export async function matchIngredients(
     if (fuzzyResults.length > 1) {
       const top = fuzzyResults.slice(0, 3);
       const scores = top.map(r => r.score ?? 0);
-      if (scores[0] !== undefined && scores[1] !== undefined && Math.abs(scores[0] - scores[1]) < 0.1) {
+      if (scores[0] !== undefined && scores[1] !== undefined && Math.abs(scores[0] - scores[1]) < AMBIGUITY_THRESHOLD) {
         results.push({
           inputName: item.name, quantity: item.quantity, unit: item.unit,
           status: 'AMBIGUOUS', confidence: 0.5,

@@ -91,7 +91,9 @@ export async function getCorrectVatForProduct(productId: string): Promise<number
 
 export function generateNextIngredientCode(lastCode: string | undefined): string {
   if (!lastCode) return 'ING-001';
-  const num = parseInt(lastCode.replace('ING-', '')) + 1;
+  const match = lastCode.match(/^ING-(\d+)$/);
+  if (!match) return 'ING-001';
+  const num = parseInt(match[1], 10) + 1;
   return `ING-${String(num).padStart(3, '0')}`;
 }
 

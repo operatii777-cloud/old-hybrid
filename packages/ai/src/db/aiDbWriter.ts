@@ -4,6 +4,7 @@ import { prisma } from '../shared/prismaClient';
 import { redis } from '../shared/redisClient';
 import { previewDbOp, captureSnapshot, executeDbOp } from './helpers';
 
+// All lowercase — compared against op.model.toLowerCase() to guard PascalCase model names
 const PROTECTED_TABLES = ['auditlog', 'session', 'tenant', 'user', 'apikey'];
 
 const DbOperationSchema = z.discriminatedUnion('type', [

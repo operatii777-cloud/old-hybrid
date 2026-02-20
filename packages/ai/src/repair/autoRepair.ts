@@ -6,7 +6,7 @@ import type { AuditIssue } from '../audit/dbAuditor';
 
 export type RepairStatus = 'FIXED' | 'FAILED' | 'NEEDS_REVIEW' | 'SKIPPED';
 
-const VIP_PRICE_MULTIPLIER = 1.25;
+const VIP_PRICE_MULTIPLIER = parseFloat(process.env.VIP_PRICE_MULTIPLIER ?? '1.25');
 
 export interface RepairResult {
   issueId:     string;

@@ -5,7 +5,8 @@ import fs from 'fs/promises';
 import os from 'os';
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
+const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_FILE_SIZE_BYTES } });
 
 // Auth guard — all AI routes require an authenticated user
 function requireAuth(req, res, next) {

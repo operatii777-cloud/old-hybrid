@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import { openai } from '../shared/openaiClient';
 
+const MIN_PDF_TEXT_LENGTH = 100;
+
 export type SourceType = 'TEXT' | 'DOCX' | 'EXCEL' | 'CSV' | 'PDF' | 'IMAGE';
 
 export interface ParsedDocument {
@@ -55,7 +57,7 @@ export async function parseDocument(filePath: string): Promise<ParsedDocument> {
         const pdfParse = await import('pdf-parse');
         const buffer = await fs.readFile(filePath);
         const data = await pdfParse.default(buffer);
-        if (data.text && data.text.length >= 100) {
+        if (data.text && data.text.length >= MIN_PDF_TEXT_LENGTH) {
           return {
             rawText: data.text,
             sourceType: 'PDF',

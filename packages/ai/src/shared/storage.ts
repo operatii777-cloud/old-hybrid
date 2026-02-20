@@ -19,7 +19,6 @@ export async function uploadToR2(
     Key:         key,
     Body:        body,
     ContentType: contentType,
-    ACL:         'public-read',
   }));
   return `${process.env.CLOUDFLARE_R2_PUBLIC_URL}/${key}`;
 }
