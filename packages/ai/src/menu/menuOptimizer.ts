@@ -1,5 +1,5 @@
 import { prisma } from '../shared/prismaClient';
-import { openai } from '../shared/openaiClient';
+import { openai, AI_MODEL, AI_MODEL_MINI } from '../shared/openaiClient';
 
 export interface MenuOptimizationReport {
   overallScore:       number;
@@ -43,7 +43,7 @@ export async function optimizeMenu(
   }));
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: AI_MODEL,
     temperature: 0.3,
     response_format: { type: 'json_object' },
     messages: [
@@ -65,7 +65,7 @@ export async function optimizeMenu(
     if (!product.description || product.description.trim() === '') {
       try {
         const descResp = await openai.chat.completions.create({
-          model:       'gpt-4o-mini',
+          model:       AI_MODEL_MINI,
           temperature: 0.5,
           messages: [
             { role: 'system', content: 'Generează o descriere scurtă și apetisantă (max 80 cuvinte) pentru un produs de meniu românesc.' },

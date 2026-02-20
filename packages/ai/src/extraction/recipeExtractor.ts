@@ -1,4 +1,4 @@
-import { openai } from '../shared/openaiClient';
+import { openai, AI_MODEL } from '../shared/openaiClient';
 import { ExtractionResultSchema } from './schemas';
 import type { ExtractionResult } from './schemas';
 import type { SourceType } from '../ingestion/documentParser';
@@ -24,7 +24,7 @@ export async function extractRecipesFromText(
 
   for (const chunk of chunks) {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: AI_MODEL,
       temperature: 0.1,
       response_format: { type: 'json_object' },
       messages: [

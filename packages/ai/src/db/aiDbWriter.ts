@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { openai } from '../shared/openaiClient';
+import { openai, AI_MODEL } from '../shared/openaiClient';
 import { prisma } from '../shared/prismaClient';
 import { redis } from '../shared/redisClient';
 import { previewDbOp, captureSnapshot, executeDbOp } from './helpers';
@@ -32,7 +32,7 @@ export async function executeAiDbOperation(
   opts?:       { dryRun?: boolean }
 ): Promise<DbWriteResult> {
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: AI_MODEL,
     temperature: 0,
     response_format: { type: 'json_object' },
     messages: [

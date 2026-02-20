@@ -1,11 +1,9 @@
 import Fuse from 'fuse.js';
+import { prisma } from '../shared/prismaClient';
+import { normalizeRo } from '../db/helpers';
+import type { ExtractedIngredient } from '../extraction/schemas';
 
 const AMBIGUITY_THRESHOLD = 0.1;
-import { openai } from '../shared/openaiClient';
-import { prisma } from '../shared/prismaClient';
-import { redis } from '../shared/redisClient';
-import { normalizeRo, cosineSim } from '../db/helpers';
-import type { ExtractedIngredient } from '../extraction/schemas';
 
 export type MatchStatus = 'EXACT' | 'FUZZY' | 'SEMANTIC' | 'AMBIGUOUS' | 'NEW';
 
@@ -19,22 +17,6 @@ export interface MatchResult {
   confidence:        number;
   matchedIngredient: { id: string; name: string; unit: string } | null;
   candidates?:       Array<{ id: string; name: string; score: number }>;
-}
-
-async function getEmbedding(text: string, tenantId: string): Promise<number[]> {
-  const hash = Buffer.from(text).toString('base64').slice(0, 32);
-  const cacheKey = `emb:${tenantId}:${hash}`;
-
-  const cached = await redis.get(cacheKey).catch(() => null);
-  if (cached) return JSON.parse(cached) as number[];
-
-  const response = await openai.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: text,
-  });
-  const embedding = response.data[0]?.embedding ?? [];
-  await redis.setEx(cacheKey, 86400, JSON.stringify(embedding)).catch(() => {});
-  return embedding;
 }
 
 export async function matchIngredients(
@@ -96,30 +78,7 @@ export async function matchIngredients(
       }
     }
 
-    // Level 3: SEMANTIC match via embeddings
-    try {
-      const inputEmb = await getEmbedding(item.name, tenantId);
-      let bestSim  = 0;
-      let bestItem: { id: string; name: string; unit: string } | null = null;
-
-      for (const ing of dbIngredients) {
-        const ingEmb = await getEmbedding(ing.name, tenantId);
-        const sim = cosineSim(inputEmb, ingEmb);
-        if (sim > bestSim) { bestSim = sim; bestItem = ing; }
-      }
-
-      if (bestSim > 0.90 && bestItem) {
-        results.push({
-          inputName: item.name, quantity: item.quantity, unit: item.unit,
-          status: 'SEMANTIC', confidence: bestSim,
-          matchedIngredient: bestItem,
-        });
-        continue;
-      }
-    } catch {
-      // Semantic matching failed, fall through to NEW
-    }
-
+    // Level 3: SEMANTIC — skip without embeddings API, fall through to NEW
     // Level 4: NEW ingredient
     results.push({
       inputName: item.name, quantity: item.quantity, unit: item.unit,

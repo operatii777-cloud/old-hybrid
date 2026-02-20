@@ -1,7 +1,7 @@
 import { prisma } from '../shared/prismaClient';
 import { detectAllergensForIngredient, calculateRecipeAllergens } from '../allergens/allergenDetector';
 import { generateProductPhoto } from '../photos/photoGenerator';
-import { openai } from '../shared/openaiClient';
+import { openai, AI_MODEL_MINI } from '../shared/openaiClient';
 import type { AuditIssue } from '../audit/dbAuditor';
 
 export type RepairStatus = 'FIXED' | 'FAILED' | 'NEEDS_REVIEW' | 'SKIPPED';
@@ -119,7 +119,7 @@ export async function repairIssues(
           if (!product) { results.push({ issueId: issue.id, issueCode: issue.code, status: 'FAILED', description: 'Produs negăsit' }); break; }
 
           const response = await openai.chat.completions.create({
-            model:       'gpt-4o-mini',
+            model:       AI_MODEL_MINI,
             temperature: 0.3,
             messages: [
               { role: 'system', content: 'Translate Romanian food menu items to English. Return JSON: { "nameEn": "...", "descriptionEn": "..." }' },

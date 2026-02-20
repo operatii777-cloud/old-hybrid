@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
-import { openai } from '../shared/openaiClient';
+import { openai, AI_MODEL } from '../shared/openaiClient';
 
 const SCHEMA_PATH = path.resolve(__dirname, '../../../../packages/db/prisma/schema.prisma');
 
@@ -20,7 +20,7 @@ export async function addToSchema(
   const currentSchema = await fs.readFile(SCHEMA_PATH, 'utf-8').catch(() => '');
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+    model: AI_MODEL,
     temperature: 0,
     response_format: { type: 'json_object' },
     messages: [

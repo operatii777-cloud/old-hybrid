@@ -1,4 +1,4 @@
-import { openai } from '../shared/openaiClient';
+import { openai, AI_MODEL_MINI } from '../shared/openaiClient';
 import { prisma } from '../shared/prismaClient';
 
 export const EU_ALLERGENS: Record<string, { code: string; keywords: string[] }> = {
@@ -46,7 +46,7 @@ export async function detectAllergensForIngredient(
   if (ruleAllergens.length === 0) {
     try {
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: AI_MODEL_MINI,
         temperature: 0,
         response_format: { type: 'json_object' },
         messages: [

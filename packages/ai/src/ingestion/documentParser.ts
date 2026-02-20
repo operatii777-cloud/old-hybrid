@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { openai } from '../shared/openaiClient';
+import { openai, AI_MODEL } from '../shared/openaiClient';
 
 const MIN_PDF_TEXT_LENGTH = 100;
 
@@ -103,7 +103,7 @@ export async function parseDocument(filePath: string): Promise<ParsedDocument> {
       };
       const mime = mimeMap[ext] ?? 'image/jpeg';
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o',
+        model: AI_MODEL,
         messages: [
           {
             role: 'user',
