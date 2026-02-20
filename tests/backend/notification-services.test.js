@@ -6,11 +6,23 @@
  * and will gracefully handle cases where credentials are not provided.
  */
 
-const dotenv = require('dotenv');
+const fs = require('fs');
 const path = require('path');
 
-// Load environment variables from .env.local for testing
-dotenv.config({ path: path.join(__dirname, '../../.env.local') });
+// Load environment variables from .env.local manually (without dotenv dependency)
+const envLocalPath = path.join(__dirname, '../../.env.local');
+if (fs.existsSync(envLocalPath)) {
+  const envContent = fs.readFileSync(envLocalPath, 'utf8');
+  envContent.split('\n').forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) return;
+    const eqIdx = trimmed.indexOf('=');
+    if (eqIdx === -1) return;
+    const key = trimmed.slice(0, eqIdx).trim();
+    const val = trimmed.slice(eqIdx + 1).trim().replace(/^["']|["']$/g, '');
+    if (key && !(key in process.env)) process.env[key] = val;
+  });
+}
 
 describe('Email Service Configuration', () => {
   test('should have proper email environment variables structure', () => {
