@@ -1,0 +1,870 @@
+# GITHUB COPILOT — IMPLEMENTARE COMPLETĂ @repo/ai (HOS AI ENGINE)
+
+## CONTEXT APLICAȚIE
+Ești într-un **monorepo Turborepo** pentru o aplicație HORECA (restaurant/hotel/café).
+Stack: TypeScript strict, Prisma ORM, PostgreSQL, Redis, Fastify, React, Socket.io, BullMQ.
+Structura monorepo existentă:
+```
+/
+├── apps/
+│   ├── web-admin/          ← React admin panel
+│   ├── api/                ← Fastify API server
+│   └── ...
+├── packages/
+│   ├── db/                 ← Prisma schema + client (@repo/db)
+│   ├── shared/             ← tipuri și utilitare comune (@repo/shared)
+│   └── ai/                 ← PACHETUL PE CARE ÎL CREĂM ACUM (@repo/ai)
+├── turbo.json
+└── package.json
+```
+
+---
+
+## SARCINA TA
+Creează **complet** pachetul `packages/ai/` cu toate fișierele, endpoint-urile API,
+tipurile TypeScript și integrarea în monorepo. Nu sări niciun fișier. Nu lăsa TODO-uri.
+
+---
+
+## PASUL 1 — Creare structură directoare
+
+Creează exact această structură în `packages/ai/`:
+
+```
+packages/ai/
+├── src/
+│   ├── shared/
+│   │   ├── openaiClient.ts
+│   │   ├── prismaClient.ts
+│   │   ├── redisClient.ts
+│   │   ├── socketClient.ts
+│   │   ├── storage.ts
+│   │   └── searchClient.ts
+│   ├── ingestion/
+│   │   └── documentParser.ts
+│   ├── extraction/
+│   │   ├── recipeExtractor.ts
+│   │   └── schemas.ts
+│   ├── matching/
+│   │   └── ingredientMatcher.ts
+│   ├── allergens/
+│   │   └── allergenDetector.ts
+│   ├── pricing/
+│   │   └── priceSuggestion.ts
+│   ├── photos/
+│   │   └── photoGenerator.ts
+│   ├── db/
+│   │   ├── productCreator.ts
+│   │   ├── aiDbWriter.ts
+│   │   └── helpers.ts
+│   ├── schema/
+│   │   └── schemaManager.ts
+│   ├── audit/
+│   │   └── dbAuditor.ts
+│   ├── repair/
+│   │   └── autoRepair.ts
+│   ├── menu/
+│   │   └── menuOptimizer.ts
+│   ├── sync/
+│   │   └── catalogSync.ts
+│   └── cli/
+│       └── hos-ai.ts
+├── index.ts
+├── package.json
+├── tsconfig.json
+└── .env.example
+```
+
+---
+
+## PASUL 2 — Fișiere shared/ (clienți singleton)
+
+### `src/shared/openaiClient.ts`
+```typescript
+import OpenAI from 'openai';
+
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error('OPENAI_API_KEY lipsește din .env');
+}
+
+export const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+```
+
+### `src/shared/prismaClient.ts`
+```typescript
+// Refolosește clientul din @repo/db dacă există, altfel crează unul nou
+import { PrismaClient } from '@prisma/client';
+
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  });
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+```
+
+### `src/shared/redisClient.ts`
+```typescript
+import { createClient } from 'redis';
+
+if (!process.env.REDIS_URL) throw new Error('REDIS_URL lipsește din .env');
+
+export const redis = createClient({ url: process.env.REDIS_URL });
+redis.on('error', (err) => console.error('[Redis AI]', err));
+redis.connect().catch(console.error);
+```
+
+### `src/shared/storage.ts`
+```typescript
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+
+const s3 = new S3Client({
+  region: 'auto',
+  endpoint: process.env.CLOUDFLARE_R2_ENDPOINT!,
+  credentials: {
+    accessKeyId:     process.env.CLOUDFLARE_R2_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY!,
+  },
+});
+
+export async function uploadToR2(
+  key: string,
+  body: Buffer,
+  contentType: string
+): Promise<string> {
+  await s3.send(new PutObjectCommand({
+    Bucket:      process.env.CLOUDFLARE_R2_BUCKET!,
+    Key:         key,
+    Body:        body,
+    ContentType: contentType,
+    ACL:         'public-read',
+  }));
+  return `${process.env.CLOUDFLARE_R2_PUBLIC_URL}/${key}`;
+}
+```
+
+### `src/shared/searchClient.ts`
+```typescript
+import { MeiliSearch } from 'meilisearch';
+
+export const meilisearch = new MeiliSearch({
+  host:   process.env.MEILISEARCH_URL  ?? 'http://localhost:7700',
+  apiKey: process.env.MEILISEARCH_KEY  ?? '',
+});
+```
+
+### `src/shared/socketClient.ts`
+```typescript
+// Importă instanța io din apps/api unde a fost inițializată
+// Sau crează un client socket dedicat pentru emit-only
+import { io as ioClient } from 'socket.io-client';
+
+// Pentru emit-only din pachetul AI (server-side)
+export const io = {
+  to: (room: string) => ({
+    emit: (event: string, data: any) => {
+      // Publică prin Redis pub/sub → API-ul ascultă și face emit real
+      const redisKey = `socket:emit:${room}`;
+      import('./redisClient').then(({ redis }) => {
+        redis.publish(redisKey, JSON.stringify({ event, data }));
+      });
+    }
+  })
+};
+```
+
+---
+
+## PASUL 3 — src/shared/helpers.ts (funcții reutilizabile)
+
+```typescript
+// packages/ai/src/db/helpers.ts
+import { PrismaClient } from '@prisma/client';
+
+export async function findOrCreateCategory(
+  tx: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>,
+  tenantId: string,
+  name: string
+): Promise<string> {
+  const existing = await (tx as any).category.findFirst({
+    where: { tenantId, name, deletedAt: null },
+    select: { id: true }
+  });
+  if (existing) return existing.id;
+
+  const created = await (tx as any).category.create({
+    data: { tenantId, name, sortOrder: 0 },
+    select: { id: true }
+  });
+  return created.id;
+}
+
+export async function captureSnapshot(
+  model: string,
+  where: Record<string, any>,
+  tenantId: string
+): Promise<any[]> {
+  const { prisma } = await import('./prismaClient');
+  const records = await (prisma as any)[model.toLowerCase()].findMany({
+    where: { ...where, tenantId }
+  });
+  return records.map((r: any) => ({ model, id: r.id, prev: r }));
+}
+
+export async function previewDbOp(
+  op: any,
+  tenantId: string
+): Promise<any[]> {
+  const { prisma } = await import('./prismaClient');
+  try {
+    return await (prisma as any)[op.model.toLowerCase()].findMany({
+      where: { ...(op.where ?? {}), tenantId },
+      take: 20,
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function executeDbOp(op: any, tenantId: string): Promise<void> {
+  const { prisma } = await import('./prismaClient');
+  const model = (prisma as any)[op.model.toLowerCase()];
+  const tenantWhere = { ...op.where, tenantId };
+
+  switch (op.type) {
+    case 'CREATE':
+      await model.create({ data: { ...op.data, tenantId } });
+      break;
+    case 'UPDATE':
+      await model.updateMany({ where: tenantWhere, data: op.data });
+      break;
+    case 'UPSERT':
+      await model.upsert({
+        where: { ...op.where, tenantId },
+        create: { ...op.create, tenantId },
+        update: op.update,
+      });
+      break;
+    case 'DELETE_SOFT':
+      await model.updateMany({ where: tenantWhere, data: { deletedAt: new Date() } });
+      break;
+    case 'BULK_UPDATE':
+      await model.updateMany({
+        where: tenantWhere,
+        data: op.data,
+        take: op.maxRecords ?? 100,
+      });
+      break;
+  }
+}
+
+export async function getCorrectVatForProduct(productId: string): Promise<number> {
+  const { prisma } = await import('./prismaClient');
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+    select: { type: true, category: { select: { name: true } } }
+  });
+  if (!product) return 9;
+  const name = product.category?.name?.toLowerCase() ?? '';
+  if (name.includes('alcool') || name.includes('vin') || name.includes('bere')) return 19;
+  if (product.type === 'SERVICE') return 19;
+  return 9; // alimente = 9% în România
+}
+
+export function generateNextIngredientCode(lastCode: string | undefined): string {
+  if (!lastCode) return 'ING-001';
+  const num = parseInt(lastCode.replace('ING-', '')) + 1;
+  return `ING-${String(num).padStart(3, '0')}`;
+}
+
+export function normalizeRo(s: string): string {
+  return s.toLowerCase()
+    .replace(/[ăâÂ]/g, 'a')
+    .replace(/[îÎ]/g, 'i')
+    .replace(/[șşŞȘ]/g, 's')
+    .replace(/[țţŢȚ]/g, 't')
+    .trim();
+}
+
+export function psychoRound(cents: number): number {
+  const tiers = [0, 50, 99];
+  const base = Math.floor(cents / 100);
+  const dec  = cents % 100;
+  const near = tiers.reduce((p, c) => Math.abs(c - dec) < Math.abs(p - dec) ? c : p);
+  return base * 100 + near;
+}
+
+export function normalizeQty(qty: number, from: string, to: string): number {
+  const map: Record<string, number> = {
+    g: 1, kg: 1000, mg: 0.001,
+    ml: 1, l: 1000,
+    buc: 1, bucata: 1, bucăți: 1,
+    lingura: 15, linguri: 15, linguriță: 5, lingurițe: 5,
+    cana: 240, căni: 240,
+    plic: 1, pachete: 1,
+  };
+  const fromN = from.toLowerCase().trim();
+  const toN   = to.toLowerCase().trim();
+  if (fromN === toN) return qty;
+  return qty * (map[fromN] ?? 1) / (map[toN] ?? 1);
+}
+
+export function cosineSim(a: number[], b: number[]): number {
+  const dot  = a.reduce((s, v, i) => s + v * b[i], 0);
+  const magA = Math.sqrt(a.reduce((s, v) => s + v * v, 0));
+  const magB = Math.sqrt(b.reduce((s, v) => s + v * v, 0));
+  return magA && magB ? dot / (magA * magB) : 0;
+}
+```
+
+---
+
+## PASUL 4 — Toate modulele src/
+
+Implementează **complet** fiecare fișier de mai jos. Nu lăsa funcții goale.
+
+### `src/ingestion/documentParser.ts`
+- Importă: mammoth, xlsx (SheetJS), pdf-parse, tesseract.js, fs/promises, path
+- Importă openaiClient pentru GPT-4 Vision (imagini)
+- Funcție exportată: `parseDocument(filePath: string): Promise<ParsedDocument>`
+- Tratează toate extensiile: .txt, .md, .docx, .xlsx, .xls, .csv, .pdf, .jpg, .jpeg, .png, .webp
+- PDF: încearcă pdf-parse, dacă textul e < 100 caractere → fallback Tesseract OCR
+- Imagine: trimite la GPT-4o Vision cu prompt "extrage tot textul din meniu"
+- Returnează: `{ rawText: string, sourceType: SourceType, metadata: { filename, pages?, sheets? } }`
+
+### `src/extraction/recipeExtractor.ts`
+- Importă: openaiClient, zod
+- Definește și exportează: ExtractedIngredientSchema, ExtractedRecipeSchema, ExtractionResultSchema
+- Funcție: `extractRecipesFromText(rawText, sourceHint?): Promise<ExtractionResult>`
+- Split text în chunk-uri de max 6000 caractere
+- Apelează GPT-4o cu response_format: json_object și temperature: 0.1
+- Deduplică rețetele după productName (case insensitive)
+- System prompt: expert gastronomie, extrage rețete complete, normalizează unități
+
+### `src/matching/ingredientMatcher.ts`
+- Importă: fuse.js, openaiClient, prismaClient, redisClient, helpers
+- Funcție: `matchIngredients(tenantId, items): Promise<MatchResult[]>`
+- 4 niveluri: EXACT (normalizeRo) → FUZZY (Fuse.js threshold 0.3) → SEMANTIC (embeddings cosine >0.90) → NEW
+- Cache embeddings în Redis cu TTL 24h (key: `emb:{tenantId}:{hash}`)
+- AMBIGUOUS: când mai mulți candidați fuzzy cu score apropiat
+- Exportă tipurile: MatchResult, MatchStatus
+
+### `src/allergens/allergenDetector.ts`
+- Constanta EU_ALLERGENS cu 14 alergeni și keywords românești + englezești
+- Funcție: `detectAllergensForIngredient(name): Promise<AllergenDetectionResult>`
+  - Rule-based rapid, apoi GPT-4o-mini pentru cazuri ambigue
+  - Returnează: `{ allergens: [{code, confidence, source}], additives: string[] }`
+- Funcție: `calculateRecipeAllergens(ingredientIds: string[]): Promise<string[]>`
+  - Interoghează DB, face union de alergeni din toate ingredientele
+
+### `src/pricing/priceSuggestion.ts`
+- Funcție: `suggestProductPrice(tenantId, recipeIngredients, servings, targetFoodCostPct?): Promise<PricingSuggestion>`
+- Preia avgWeightedPrice sau costPrice din DB
+- Folosește normalizeQty() din helpers
+- Calculează: costPerServingCents, suggestedPriceNormal (psychoRound), suggestedPriceVip (+25%), suggestedPriceDiscount (-15%)
+- confidence: HIGH/MEDIUM/LOW în funcție de câte ingrediente au preț
+
+### `src/photos/photoGenerator.ts`
+- Funcție: `generateProductPhoto(name, description, category, tenantId): Promise<{url, thumbnailUrl}>`
+- Rate limit cu Redis lock (TTL 24h) per produs
+- DALL-E 3 cu prompt profesional food photography
+- sharp: resize 800x800 WebP full + 200x200 thumb
+- Upload la R2 cu uploadToR2()
+- Fallback: dacă DALL-E eșuează, returnează URL placeholder
+
+### `src/db/productCreator.ts`
+- Importă: prismaClient, allergenDetector, helpers
+- Funcție: `createProductFromRecipe(tenantId, recipe, matches, pricing, photoUrl, userId): Promise<{productId, recipeId, newIngredientsCount}>`
+- Totul într-o tranzacție Prisma $transaction
+- Crează ingrediente noi cu generateNextIngredientCode()
+- Per ingredient nou: detectAllergensForIngredient()
+- Crează Product cu isActive: false (necesită aprobare)
+- Crează Recipe cu RecipeIngredients
+- Update allergens pe produs din calculateRecipeAllergens()
+- Crează AuditLog
+
+### `src/db/aiDbWriter.ts`
+- Importă: openaiClient, prismaClient, redisClient, helpers
+- PROTECTED_TABLES = ['auditlog', 'session', 'tenant', 'user', 'apikey']
+- Schema Zod: DbOperationSchema cu discriminatedUnion (CREATE/UPDATE/UPSERT/DELETE_SOFT/BULK_UPDATE)
+- Funcție: `executeAiDbOperation(tenantId, userId, instruction, opts?): Promise<DbWriteResult>`
+  - GPT-4o traduce instrucțiunea → DbOperation JSON
+  - Validează că modelul nu e în PROTECTED_TABLES
+  - previewDbOp() pentru a vedea ce va fi afectat
+  - captureSnapshot() → salvează în Redis cu TTL 3600s
+  - executeDbOp() în tranzacție
+  - Crează AuditLog
+- Funcție: `rollbackDbOperation(tenantId, userId, rollbackKey): Promise<{restored: number}>`
+
+### `src/schema/schemaManager.ts`
+- Importă: openaiClient, execSync din child_process, fs/promises, path
+- SCHEMA_PATH = rezolvă calea absolută la packages/db/prisma/schema.prisma
+- Funcție: `addToSchema(description, opts?): Promise<SchemaChangeResult>`
+  - Citește schema.prisma curentă
+  - GPT-4o generează definiția Prisma + migrationName + rollbackSql
+  - Dacă dryRun: returnează preview fără a scrie
+  - Dacă autoMigrate: backup schema → append definiție → prisma migrate dev → prisma generate → șterge backup
+  - La eroare: restaurează backup
+- Funcție: `autoFixMissingField(error, tenantId): Promise<boolean>`
+  - Parsează mesajul de eroare pentru câmpul lipsă
+  - Apelează addToSchema() cu autoMigrate: true
+
+### `src/audit/dbAuditor.ts`
+- Importă: prismaClient
+- Funcție: `runFullAudit(tenantId): Promise<AuditReport>`
+- Detectează minim 10 tipuri de probleme:
+  - NO_RECIPE, PRICE_BELOW_COST, MISSING_ALLERGENS, NO_PRICE, NO_PHOTO
+  - WRONG_VAT, VIP_PRICE_LOWER, NO_PREP_TIME, NO_EN_TRANSLATION, ORPHAN_INGREDIENT
+- healthScore = 100 - (critical×10) - (warning×3) - (info×1), minim 0
+- Exportă tipurile: AuditIssue, AuditReport, Severity, IssueCode
+
+### `src/repair/autoRepair.ts`
+- Importă: prismaClient, allergenDetector, photoGenerator, openaiClient, helpers
+- Funcție: `repairIssues(tenantId, userId, issues, opts?): Promise<RepairResult[]>`
+  - Filtrează doar autoFixAvailable=true
+  - onProgress callback pentru CLI
+  - Handler per issue.code: MISSING_ALLERGENS, NO_PHOTO, WRONG_VAT, VIP_PRICE_LOWER, NO_EN_TRANSLATION
+  - PRICE_BELOW_COST → NEEDS_REVIEW (nu modifică automat prețul)
+  - AuditLog bulk pentru toate FIXED
+- Exportă tipul: RepairResult
+
+### `src/menu/menuOptimizer.ts`
+- Importă: prismaClient, openaiClient
+- Funcție: `optimizeMenu(tenantId, locationId?): Promise<MenuOptimizationReport>`
+  - Încarcă categorii + produse + metrics comenzi
+  - GPT-4o analizează și returnează recommendations + menuGaps + topPerformers
+  - Auto-fix: generează descrieri pentru produse fără descriere (GPT-4o-mini)
+  - Reordonează produse în categorie: margin×0.6 + orders×0.4 descrescător
+  - Returnează: overallScore, recommendations, descriptionsFixed, analyzedAt
+
+### `src/sync/catalogSync.ts`
+- Importă: prismaClient, redisClient, socketClient, searchClient
+- Funcție: `syncProductToAllInterfaces(tenantId, productId, action): Promise<void>`
+  - Invalidare Redis cache: del menu:{tenantId}:*
+  - WebSocket broadcast: io.to(`tenant:${tenantId}`).emit('menu:updated', {...})
+  - Promise.allSettled pentru: Cloudflare CDN purge, sync agregatori, Meilisearch reindex
+  - Funcții separate: purgeCDN(), syncToGlovo(), syncToBolt(), syncToWolt(), syncToTazz()
+  - Agregatori: HTTP POST la URL-urile configurate în .env
+  - AuditLog la final
+
+---
+
+## PASUL 5 — index.ts (entry point pachet)
+
+```typescript
+// packages/ai/index.ts
+export { parseDocument }                         from './src/ingestion/documentParser';
+export { extractRecipesFromText }                from './src/extraction/recipeExtractor';
+export { matchIngredients }                      from './src/matching/ingredientMatcher';
+export { detectAllergensForIngredient,
+         calculateRecipeAllergens }              from './src/allergens/allergenDetector';
+export { suggestProductPrice }                   from './src/pricing/priceSuggestion';
+export { generateProductPhoto }                  from './src/photos/photoGenerator';
+export { createProductFromRecipe }               from './src/db/productCreator';
+export { executeAiDbOperation,
+         rollbackDbOperation }                   from './src/db/aiDbWriter';
+export { addToSchema,
+         autoFixMissingField }                   from './src/schema/schemaManager';
+export { runFullAudit }                          from './src/audit/dbAuditor';
+export { repairIssues }                          from './src/repair/autoRepair';
+export { optimizeMenu }                          from './src/menu/menuOptimizer';
+export { syncProductToAllInterfaces }            from './src/sync/catalogSync';
+
+export type { ParsedDocument, SourceType }       from './src/ingestion/documentParser';
+export type { ExtractionResult }                 from './src/extraction/recipeExtractor';
+export type { MatchResult, MatchStatus }         from './src/matching/ingredientMatcher';
+export type { AllergenDetectionResult }          from './src/allergens/allergenDetector';
+export type { PricingSuggestion }                from './src/pricing/priceSuggestion';
+export type { AuditIssue, AuditReport }          from './src/audit/dbAuditor';
+export type { RepairResult }                     from './src/repair/autoRepair';
+```
+
+---
+
+## PASUL 6 — package.json
+
+```json
+{
+  "name": "@repo/ai",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "bin": { "hos-ai": "./src/cli/hos-ai.ts" },
+  "scripts": {
+    "build": "tsc",
+    "cli":   "tsx src/cli/hos-ai.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@prisma/client": "*",
+    "commander": "^11.0.0",
+    "chalk": "^5.0.0",
+    "cli-table3": "^0.6.0",
+    "fuse.js": "^7.0.0",
+    "inquirer": "^9.0.0",
+    "mammoth": "^1.6.0",
+    "meilisearch": "^0.37.0",
+    "openai": "^4.0.0",
+    "ora": "^7.0.0",
+    "pdf-parse": "^1.1.1",
+    "puppeteer": "^21.0.0",
+    "redis": "^4.0.0",
+    "sharp": "^0.33.0",
+    "tesseract.js": "^5.0.0",
+    "tsx": "^4.0.0",
+    "xlsx": "^0.18.5",
+    "zod": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
+```
+
+---
+
+## PASUL 7 — tsconfig.json
+
+```json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir":      "dist",
+    "rootDir":     ".",
+    "declaration": true,
+    "module":      "CommonJS",
+    "target":      "ES2022",
+    "strict":      true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "index.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+---
+
+## PASUL 8 — .env.example
+
+```env
+# OpenAI
+OPENAI_API_KEY=sk-...
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/horeca
+
+# Redis
+REDIS_URL=redis://localhost:6379
+
+# Cloudflare R2
+CLOUDFLARE_R2_ENDPOINT=https://<account>.r2.cloudflarestorage.com
+CLOUDFLARE_R2_BUCKET=horeca-media
+CLOUDFLARE_R2_ACCESS_KEY_ID=
+CLOUDFLARE_R2_SECRET_ACCESS_KEY=
+CLOUDFLARE_R2_PUBLIC_URL=https://media.yourhoreca.com
+
+# Meilisearch
+MEILISEARCH_URL=http://localhost:7700
+MEILISEARCH_KEY=
+
+# Cloudflare CDN (pentru cache purge)
+CLOUDFLARE_API_TOKEN=
+CLOUDFLARE_ZONE_ID=
+
+# Agregatori (opțional)
+GLOVO_MENU_SYNC_URL=
+BOLT_MENU_SYNC_URL=
+WOLT_MENU_SYNC_URL=
+TAZZ_MENU_SYNC_URL=
+```
+
+---
+
+## PASUL 9 — API Endpoints în apps/api/
+
+Adaugă în Fastify API (`apps/api/src/routes/`) un nou fișier `ai.routes.ts`:
+
+```typescript
+// apps/api/src/routes/ai.routes.ts
+import { FastifyInstance } from 'fastify';
+import {
+  runFullAudit, repairIssues, executeAiDbOperation,
+  rollbackDbOperation, addToSchema, optimizeMenu,
+  syncProductToAllInterfaces
+} from '@repo/ai';
+import { requireAuth, requireRole } from '../middleware/auth';
+
+export async function aiRoutes(app: FastifyInstance) {
+
+  // ── AUDIT ──────────────────────────────────────────────────────────────────
+  // GET /api/ai/audit?tenantId=xxx
+  // Rulează auditul complet și returnează raportul
+  app.get('/ai/audit', { preHandler: [requireAuth, requireRole('MANAGER')] },
+    async (req, reply) => {
+      const { tenantId } = req.query as { tenantId: string };
+      const report = await runFullAudit(tenantId);
+      return reply.send(report);
+    }
+  );
+
+  // POST /api/ai/audit/repair
+  // Body: { tenantId, issueIds?: string[], dryRun?: boolean }
+  // Repară toate problemele auto-fixable (sau doar cele din issueIds)
+  app.post('/ai/audit/repair', { preHandler: [requireAuth, requireRole('MANAGER')] },
+    async (req, reply) => {
+      const { tenantId, issueIds, dryRun } = req.body as {
+        tenantId: string; issueIds?: string[]; dryRun?: boolean;
+      };
+      const report  = await runFullAudit(tenantId);
+      const targets = issueIds
+        ? report.issues.filter(i => issueIds.includes(i.id))
+        : report.issues;
+      const results = await repairIssues(tenantId, req.user.id, targets, { dryRun });
+      return reply.send({ results, summary: {
+        fixed:       results.filter(r => r.status === 'FIXED').length,
+        failed:      results.filter(r => r.status === 'FAILED').length,
+        needsReview: results.filter(r => r.status === 'NEEDS_REVIEW').length,
+      }});
+    }
+  );
+
+  // ── MENU OPTIMIZE ──────────────────────────────────────────────────────────
+  // POST /api/ai/menu/optimize
+  // Body: { tenantId, locationId? }
+  app.post('/ai/menu/optimize', { preHandler: [requireAuth, requireRole('MANAGER')] },
+    async (req, reply) => {
+      const { tenantId, locationId } = req.body as { tenantId: string; locationId?: string };
+      const result = await optimizeMenu(tenantId, locationId);
+      return reply.send(result);
+    }
+  );
+
+  // ── DB WRITE ───────────────────────────────────────────────────────────────
+  // POST /api/ai/db/write
+  // Body: { tenantId, instruction: string, dryRun?: boolean }
+  app.post('/api/ai/db/write', { preHandler: [requireAuth, requireRole('ADMIN')] },
+    async (req, reply) => {
+      const { tenantId, instruction, dryRun } = req.body as {
+        tenantId: string; instruction: string; dryRun?: boolean;
+      };
+      const result = await executeAiDbOperation(tenantId, req.user.id, instruction, { dryRun });
+      return reply.send(result);
+    }
+  );
+
+  // POST /api/ai/db/rollback
+  // Body: { tenantId, rollbackKey: string }
+  app.post('/api/ai/db/rollback', { preHandler: [requireAuth, requireRole('ADMIN')] },
+    async (req, reply) => {
+      const { tenantId, rollbackKey } = req.body as { tenantId: string; rollbackKey: string };
+      const result = await rollbackDbOperation(tenantId, req.user.id, rollbackKey);
+      return reply.send(result);
+    }
+  );
+
+  // ── SCHEMA ─────────────────────────────────────────────────────────────────
+  // POST /api/ai/schema/add
+  // Body: { description: string, targetModel?: string, dryRun?: boolean, autoMigrate?: boolean }
+  // DOAR pentru SUPER_ADMIN — schimbă schema DB
+  app.post('/api/ai/schema/add', { preHandler: [requireAuth, requireRole('SUPER_ADMIN')] },
+    async (req, reply) => {
+      const { description, targetModel, dryRun, autoMigrate } = req.body as {
+        description: string; targetModel?: string; dryRun?: boolean; autoMigrate?: boolean;
+      };
+      const result = await addToSchema(description, { targetModel, dryRun, autoMigrate });
+      return reply.send(result);
+    }
+  );
+
+  // ── SYNC ───────────────────────────────────────────────────────────────────
+  // POST /api/ai/sync/product
+  // Body: { tenantId, productId, action: 'ACTIVATE'|'UPDATE'|'DEACTIVATE' }
+  app.post('/api/ai/sync/product', { preHandler: [requireAuth, requireRole('MANAGER')] },
+    async (req, reply) => {
+      const { tenantId, productId, action } = req.body as {
+        tenantId: string; productId: string; action: 'ACTIVATE'|'UPDATE'|'DEACTIVATE';
+      };
+      await syncProductToAllInterfaces(tenantId, productId, action);
+      return reply.send({ synced: true, productId, action });
+    }
+  );
+
+  // ── IMPORT (upload fișier + procesare) ────────────────────────────────────
+  // POST /api/ai/import
+  // multipart/form-data: file + tenantId + foodCost? + dryRun?
+  app.post('/api/ai/import', { preHandler: [requireAuth, requireRole('MANAGER')] },
+    async (req, reply) => {
+      const data     = await req.file();
+      const tenantId = req.body.tenantId as string;
+      const dryRun   = req.body.dryRun === 'true';
+      const foodCost = parseInt(req.body.foodCost ?? '30');
+
+      if (!data) return reply.status(400).send({ error: 'Niciun fișier trimis' });
+
+      // Salvează temporar fișierul
+      const tmpPath = `/tmp/${Date.now()}_${data.filename}`;
+      const fs      = await import('fs/promises');
+      await fs.writeFile(tmpPath, await data.toBuffer());
+
+      try {
+        const { parseDocument }          = await import('@repo/ai');
+        const { extractRecipesFromText } = await import('@repo/ai');
+        const { matchIngredients }       = await import('@repo/ai');
+        const { suggestProductPrice }    = await import('@repo/ai');
+        const { generateProductPhoto }   = await import('@repo/ai');
+        const { createProductFromRecipe }= await import('@repo/ai');
+
+        const doc       = await parseDocument(tmpPath);
+        const extracted = await extractRecipesFromText(doc.rawText, doc.sourceType);
+        const results   = [];
+
+        for (const recipe of extracted.recipes) {
+          const matches = await matchIngredients(tenantId, recipe.ingredients);
+          const pricing = await suggestProductPrice(
+            tenantId,
+            matches.filter(m => m.matchedIngredient).map(m => ({
+              ingredientId: m.matchedIngredient!.id, quantity: 0, unit: 'g'
+            })),
+            recipe.servings, foodCost
+          );
+          const photo = await generateProductPhoto(
+            recipe.productName, recipe.description ?? '', recipe.category, tenantId
+          ).catch(() => ({ url: '', thumbnailUrl: '' }));
+
+          if (!dryRun) {
+            const r = await createProductFromRecipe(
+              tenantId, recipe, matches, pricing, photo.url, req.user.id
+            );
+            results.push({ ...r, productName: recipe.productName });
+          } else {
+            results.push({ dryRun: true, productName: recipe.productName, pricing, matchSummary: {
+              total: matches.length,
+              new:   matches.filter(m => m.status === 'NEW').length,
+              matched: matches.filter(m => m.status !== 'NEW').length,
+            }});
+          }
+        }
+
+        return reply.send({
+          imported: results.length,
+          dryRun,
+          results,
+          pendingApprovalUrl: `/admin/products/pending?tenantId=${tenantId}`,
+        });
+      } finally {
+        await import('fs/promises').then(fs => fs.unlink(tmpPath).catch(() => {}));
+      }
+    }
+  );
+}
+```
+
+### Înregistrează rutele în `apps/api/src/app.ts`:
+```typescript
+import { aiRoutes } from './routes/ai.routes';
+// ... în funcția de setup:
+app.register(aiRoutes, { prefix: '/api' });
+```
+
+---
+
+## PASUL 10 — Integrare în turbo.json și root package.json
+
+### `turbo.json` — adaugă în pipeline:
+```json
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "@repo/ai#build": {
+      "dependsOn": ["@repo/db#build"],
+      "outputs": ["dist/**"]
+    }
+  }
+}
+```
+
+### Root `package.json` — adaugă în workspaces:
+```json
+{
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
+```
+
+### `apps/api/package.json` — adaugă dependența:
+```json
+{
+  "dependencies": {
+    "@repo/ai": "*"
+  }
+}
+```
+
+---
+
+## PASUL 11 — Instalare și rulare
+
+Rulează în ordine:
+
+```bash
+# 1. Instalare dependențe pachet nou
+cd packages/ai
+npm install
+
+# 2. Copiere .env.example → .env și completare chei
+cp .env.example .env
+
+# 3. Build din root (Turborepo)
+cd ../..
+npm run build
+
+# 4. Test CLI
+cd packages/ai
+npx tsx src/cli/hos-ai.ts --help
+
+# 5. Testare audit
+npx tsx src/cli/hos-ai.ts audit --tenant=<TENANT_ID>
+
+# 6. Testare import
+npx tsx src/cli/hos-ai.ts import --file=test-menu.pdf --tenant=<TENANT_ID> --dry-run
+```
+
+---
+
+## REGULI IMPORTANTE PENTRU COPILOT
+
+1. **TypeScript strict** — zero `any` neexplicitat, zero `as unknown as`
+2. **Toate funcțiile async** returnează Promise-uri tipate explicit
+3. **Niciodată hard delete** — întotdeauna `deletedAt: new Date()`
+4. **tenantId** injectat în ORICE query Prisma — niciodată cross-tenant
+5. **Try/catch** pe toate apelurile externe (OpenAI, Cloudflare, agregatori)
+6. **AuditLog** creat pentru orice scriere în DB
+7. **Dry-run mode** disponibil pentru toate operațiile de scriere
+8. **Valori monetare** = INTEGER în cenți (nu float RON)
+9. **Rollback** disponibil pentru operații DB Writer (snapshot în Redis, TTL 1h)
+10. **Rate limiting** pe foto generator (Redis lock, TTL 24h per produs)
+
+---
+
+## VERIFICARE FINALĂ
+
+După implementare, verifică că există și funcționează:
+- [ ] `packages/ai/index.ts` exportă toate funcțiile
+- [ ] `packages/ai/package.json` are toate dependențele
+- [ ] `npx tsx src/cli/hos-ai.ts --help` afișează comenzile
+- [ ] `apps/api/src/routes/ai.routes.ts` există și e înregistrat în app.ts
+- [ ] Toate shared/ clients sunt inițializați cu variabile de mediu validate
+- [ ] Fiecare modul importă din `../shared/` nu din librării direct (pentru singleton)
