@@ -35,16 +35,28 @@ export async function parseDocument(filePath: string): Promise<ParsedDocument> {
 
     case '.xlsx':
     case '.xls': {
-      const XLSX = await import('xlsx');
-      const workbook = XLSX.readFile(filePath);
-      const sheets = workbook.SheetNames;
-      const rawText = sheets
-        .map((name: string) => {
-          const sheet = workbook.Sheets[name];
-          return `=== ${name} ===\n${XLSX.utils.sheet_to_csv(sheet)}`;
-        })
-        .join('\n\n');
-      return { rawText, sourceType: 'EXCEL', metadata: { filename, sheets } };
+      const ExcelJS = await import('exceljs');
+      const workbook = new ExcelJS.Workbook();
+      // ExcelJS natively supports .xlsx (Office Open XML).
+      // .xls (Excel 97-2003 binary) is not supported — advise conversion.
+      if (ext === '.xls') {
+        throw new Error(
+          'Formatul .xls (Excel 97-2003) nu este suportat. Salvați fișierul ca .xlsx și reîncercați.'
+        );
+      }
+      await workbook.xlsx.readFile(filePath);
+      const sheets: string[] = [];
+      const textParts: string[] = [];
+      workbook.eachSheet((worksheet) => {
+        sheets.push(worksheet.name);
+        const rows: string[] = [];
+        worksheet.eachRow((row) => {
+          const values = (row.values as Array<unknown>).slice(1); // index 0 is always undefined
+          rows.push(values.map((v) => (v != null ? String(v) : '')).join(','));
+        });
+        textParts.push(`=== ${worksheet.name} ===\n${rows.join('\n')}`);
+      });
+      return { rawText: textParts.join('\n\n'), sourceType: 'EXCEL', metadata: { filename, sheets } };
     }
 
     case '.csv': {
