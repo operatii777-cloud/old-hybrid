@@ -38,6 +38,7 @@ import experienceEngineRoutes from './admin/experience-engine.js';
 import digitalIdentityRoutes from './admin/digital-identity.js';
 import paymentOrchestrationRoutes from './admin/payment-orchestration.js';
 import aiAssistantRoutes from './admin/ai-assistant.js';
+import aiRoutes from './ai.js';
 
 export function setupRoutes(app) {
   // Auth
@@ -87,6 +88,7 @@ export function setupRoutes(app) {
   app.use('/api/digital-identity', digitalIdentityRoutes);
   app.use('/api/payment-orchestration', paymentOrchestrationRoutes);
   app.use('/api/ai-assistant', aiAssistantRoutes);
+  app.use('/api/ai', aiRoutes);
 
   // Not found
   app.use('/api/*', (req, res) => {
