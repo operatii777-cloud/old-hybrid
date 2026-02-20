@@ -19,6 +19,16 @@ export async function createProductFromRecipe(
   photoUrl:  string,
   userId:    string
 ): Promise<ProductCreationResult> {
+  // Pre-compute allergens OUTSIDE the transaction to avoid tx timeout
+  // (AI calls and Prisma queries can take >5 s combined)
+  const allergensByName = new Map<string, string[]>();
+  for (const match of matches) {
+    if (match.status === 'NEW') {
+      const result = await detectAllergensForIngredient(match.inputName);
+      allergensByName.set(match.inputName, result.allergens.map(a => a.code));
+    }
+  }
+
   return (prisma as any).$transaction(async (tx: any) => {
     const categoryId = await findOrCreateCategory(tx, tenantId, recipe.category);
 
@@ -36,7 +46,6 @@ export async function createProductFromRecipe(
 
     for (const match of matches) {
       if (match.status === 'NEW') {
-        const allergenResult = await detectAllergensForIngredient(match.inputName);
         lastCode = generateNextIngredientCode(lastCode);
 
         const newIng = await tx.ingredient.create({
@@ -45,7 +54,7 @@ export async function createProductFromRecipe(
             code:      lastCode,
             name:      match.inputName,
             unit:      match.unit,
-            allergens: allergenResult.allergens.map(a => a.code),
+            allergens: allergensByName.get(match.inputName) ?? [],
           },
           select: { id: true },
         });
@@ -100,11 +109,19 @@ export async function createProductFromRecipe(
       });
     }
 
-    // Update allergens on product
+    // Allergens on product — collect from newly-created ingredient IDs
     const allIngredientIds = matches
       .map(m => ingredientIdMap.get(m.inputName))
       .filter(Boolean) as string[];
-    const allergens = await calculateRecipeAllergens(allIngredientIds);
+    // calculateRecipeAllergens reads ingredient rows — use tx to stay in snapshot
+    const ingRows = await tx.ingredient.findMany({
+      where:  { id: { in: allIngredientIds } },
+      select: { allergens: true },
+    }) as Array<{ allergens: string[] }>;
+    const allergenSet = new Set<string>();
+    for (const row of ingRows) for (const a of row.allergens ?? []) allergenSet.add(a);
+    const allergens = Array.from(allergenSet);
+
     await tx.product.update({
       where: { id: product.id },
       data:  { allergens },

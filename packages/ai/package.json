@@ -18,7 +18,7 @@
     "chalk": "^5.0.0",
     "cli-table3": "^0.6.0",
     "commander": "^11.0.0",
-    "exceljs": "^4.4.0",
+    "dotenv": "^17.0.0",
     "fuse.js": "^7.0.0",
     "groq-sdk": "^0.37.0",
     "mammoth": "^1.6.0",
