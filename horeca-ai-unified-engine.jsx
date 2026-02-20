@@ -1474,7 +1474,7 @@ const GROUPS = [
   { id: "CLI",     label: "⌨️ CLI",     color: "#A78BFA", desc: "Un singur CLI pentru tot" },
 ];
 
-const BADGE_CLR: Record<string,string> = {
+const BADGE_CLR = {
   SHARED:"#6366F1", "GPT-4o":"#EC4899", WRITE:"#F59E0B",
   SCHEMA:"#EF4444", AUDIT:"#EC4899", REPAIR:"#10B981",
   OPTIMIZE:"#F97316", SYNC:"#14B8A6", CLI:"#A78BFA",
@@ -1484,7 +1484,7 @@ export default function HOSAIEngine() {
   const [selGroup,  setSelGroup]  = useState("IMPORT");
   const [selModule, setSelModule] = useState("ingest");
   const [showCode,  setShowCode]  = useState(false);
-  const [copied,    setCopied]    = useState<string|null>(null);
+  const [copied,    setCopied]    = useState(null);
 
   const groupMods = ENGINE_MODULES.filter(m => m.group === selGroup);
   const mod = ENGINE_MODULES.find(m => m.id === selModule) ?? groupMods[0];
@@ -1494,7 +1494,7 @@ export default function HOSAIEngine() {
     m.detail.map(d => `• ${d}`).join("\n") + "\n\n" + m.code
   ).join("\n\n");
 
-  const copy = (text: string, key: string) => {
+  const copy = (text, key) => {
     navigator.clipboard.writeText(text);
     setCopied(key);
     setTimeout(() => setCopied(null), 2000);

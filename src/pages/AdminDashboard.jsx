@@ -57,6 +57,7 @@ const DigitalIdentityPage = lazy(() => import('../components/DigitalIdentityPage
 const PaymentOrchestrationPage = lazy(() => import('../components/PaymentOrchestrationPage'));
 const DeliveryDispatchPage = lazy(() => import('../components/DeliveryDispatchPage'));
 const AIAssistantPage = lazy(() => import('../components/AIAssistantPage'));
+const HOSAIEngine = lazy(() => import('../../horeca-ai-unified-engine'));
 
 // Loading component for better UX during lazy loading
 const ComponentLoader = () => (
@@ -247,6 +248,8 @@ export default function AdminDashboard() {
           return <DeliveryDispatchPage />;
         case 'ai-assistant':
           return <AIAssistantPage />;
+        case 'hos-ai-engine':
+          return <HOSAIEngine />;
         default:
           return <MainDashboard onMenuSelect={setActiveMenuItem} />;
       }
@@ -728,6 +731,14 @@ export default function AdminDashboard() {
             className={`w-full p-3 text-left font-bold hover:bg-violet-100 border-b border-gray-300 text-black ${activeMenuItem === 'ai-assistant' ? 'bg-violet-300' : 'bg-gray-200'}`}
           >
             🤖 Asistent AI (Gratuit)
+          </button>
+
+          {/* HOS AI Engine */}
+          <button
+            onClick={() => handleMenuClick('hos-ai-engine')}
+            className={`w-full p-3 text-left font-bold hover:bg-purple-100 border-b border-gray-300 text-black ${activeMenuItem === 'hos-ai-engine' ? 'bg-purple-300' : 'bg-gray-200'}`}
+          >
+            🧠 HOS AI Engine
           </button>
         </div>
 
