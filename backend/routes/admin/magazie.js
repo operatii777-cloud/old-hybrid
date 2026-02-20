@@ -1,7 +1,16 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { getDatabase } from '../../database/init-db.js';
 import { logger } from '../../utils/logger.js';
 import { isIngredientExclus } from '../../utils/ingrediente-excluse.js';
+
+const magazieLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { ok: false, error: 'Prea multe cereri.' }
+});
 
 const router = express.Router();
 const db = () => getDatabase();
@@ -42,9 +51,9 @@ router.get('/materii-prime/:cod', async (req, res) => {
   }
 });
 
-router.post('/materii-prime', async (req, res) => {
+router.post('/materii-prime', magazieLimiter, async (req, res) => {
   try {
-    const { cod, denumire, um, pret, grupa, st_min, coef, zile, tva, barcod } = req.body;
+    let { cod, denumire, um, pret, grupa, st_min, coef, zile, tva, barcod } = req.body;
 
     if (!denumire || !pret) {
       return res.status(400).json({ error: 'Denumire și Preț sunt obligatorii' });
@@ -53,13 +62,19 @@ router.post('/materii-prime', async (req, res) => {
       return res.status(400).json({ error: 'Acest tip de ingredient (derivat/preparat, ex. apă fierbinte, spumă de lapte) nu se înregistrează ca material de stoc.' });
     }
 
+    // Auto-generare cod unic dacă nu este furnizat (SQLite serialized writes; OK pentru uz single-server)
+    if (!cod) {
+      const maxCod = await db().get('SELECT COALESCE(MAX(cod), 0) as max_cod FROM materii_prime');
+      cod = (maxCod.max_cod || 0) + 1;
+    }
+
     await db().run(
       `INSERT INTO materii_prime (cod, denumire, grupa, pret, um, st_min, proces, coef, zile, tva, barcod)
        VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?)`,
       [cod, denumire, grupa || 1, pret, um || 'Kg', st_min || 0, coef || 1, zile || 0, tva || 1.11, barcod || null]
     );
 
-    res.json({ success: true, message: 'Material adăugat cu succes' });
+    res.json({ success: true, message: 'Material adăugat cu succes', cod });
   } catch (error) {
     logger.error('Add materie error:', error);
     res.status(500).json({ error: error.message });

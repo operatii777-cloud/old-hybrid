@@ -38,6 +38,11 @@ const IstoricReturPage = lazy(() => import('../components/IstoricReturPage'));
 const SetariPage = lazy(() => import('../components/SetariPage'));
 const SincronizarePage = lazy(() => import('../components/SincronizarePage'));
 const ReservationsManagement = lazy(() => import('../components/ReservationsManagement'));
+const FisaTehnicaPage = lazy(() => import('../components/FisaTehnicaPage'));
+const HACCPPage = lazy(() => import('../components/HACCPPage'));
+const TrasabilitatePage = lazy(() => import('../components/TrasabilitatePage'));
+const MateriiPrimePage = lazy(() => import('../components/MateriiPrimePage'));
+const SubRetetePage = lazy(() => import('../components/SubRetetePage'));
 const ReportingDashboard = lazy(() => import('../components/ReportingDashboard'));
 
 // Loading component for better UX during lazy loading
@@ -81,8 +86,14 @@ export default function AdminDashboard() {
     } else {
       setActiveMenuItem(menuItem);
       const utilitareItems = ['config-sistem', 'verificare-retete', 'actualizare-pret', 'backup', 'inventar', 'curatare-date', 'setari'];
+      const logisticaItems = ['materii-prime', 'haccp', 'trasabilitate'];
+      const reteteCItems = ['editare-retete', 'catalog-retete', 'editare-produse', 'verificare', 'actualizare', 'sub-retete', 'fise-tehnice'];
       if (menuItem !== 'nir-magazie' && menuItem !== 'nir-gestiuni') setExpandedNir(false);
-      setExpandedMenu(utilitareItems.includes(menuItem) ? 'utilitare' : null);
+      setExpandedMenu(
+        utilitareItems.includes(menuItem) ? 'utilitare' :
+        logisticaItems.includes(menuItem) ? 'logistica' :
+        reteteCItems.includes(menuItem) ? 'retete' : null
+      );
       setExpandedDescarcare(['sincronizare', 'desc-manuala', 'desc-vanzare', 'consum'].includes(menuItem));
     }
   };
@@ -181,6 +192,16 @@ export default function AdminDashboard() {
           return <ReservationsManagement />;
         case 'reporting-dashboard':
           return <ReportingDashboard />;
+        case 'fise-tehnice':
+          return <FisaTehnicaPage />;
+        case 'haccp':
+          return <HACCPPage />;
+        case 'trasabilitate':
+          return <TrasabilitatePage />;
+        case 'materii-prime':
+          return <MateriiPrimePage />;
+        case 'sub-retete':
+          return <SubRetetePage />;
         case 'rapoarte':
           return <div className="p-8"><h2 className="text-2xl font-bold">Rapoarte</h2><p>Interfață rapoarte în dezvoltare...</p></div>;
         case 'descarcare':
@@ -324,6 +345,41 @@ export default function AdminDashboard() {
                 <button onClick={() => handleMenuClick('actualizare')} 
                   className={`w-full p-2 pl-6 text-left text-sm hover:bg-green-100 text-black ${activeMenuItem === 'actualizare' ? 'bg-green-300 font-bold' : ''}`}>
                   Actualizare
+                </button>
+                <button onClick={() => handleMenuClick('sub-retete')} 
+                  className={`w-full p-2 pl-6 text-left text-sm hover:bg-green-100 text-black ${activeMenuItem === 'sub-retete' ? 'bg-green-300 font-bold' : ''}`}>
+                  🥘 Sub-Rețete
+                </button>
+                <button onClick={() => handleMenuClick('fise-tehnice')} 
+                  className={`w-full p-2 pl-6 text-left text-sm hover:bg-green-100 text-black ${activeMenuItem === 'fise-tehnice' ? 'bg-green-300 font-bold' : ''}`}>
+                  📋 Fișe Tehnice
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Logistică */}
+          <div className="border-b border-gray-300">
+            <button
+              onClick={() => handleMenuClick('logistica', true)}
+              className="w-full p-3 text-left font-bold bg-teal-100 hover:bg-teal-200 border-b border-gray-300 flex justify-between items-center text-black"
+            >
+              🛡️ Logistică &amp; HACCP
+              <span className="text-xs text-black">{expandedMenu === 'logistica' ? '▼' : '▶'}</span>
+            </button>
+            {expandedMenu === 'logistica' && (
+              <div className="bg-teal-50">
+                <button onClick={() => handleMenuClick('materii-prime')}
+                  className={`w-full p-2 pl-6 text-left text-sm hover:bg-teal-100 text-black ${activeMenuItem === 'materii-prime' ? 'bg-teal-300 font-bold' : ''}`}>
+                  🧪 Ingrediente &amp; Alergeni
+                </button>
+                <button onClick={() => handleMenuClick('haccp')}
+                  className={`w-full p-2 pl-6 text-left text-sm hover:bg-teal-100 text-black ${activeMenuItem === 'haccp' ? 'bg-teal-300 font-bold' : ''}`}>
+                  🛡️ Control HACCP
+                </button>
+                <button onClick={() => handleMenuClick('trasabilitate')}
+                  className={`w-full p-2 pl-6 text-left text-sm hover:bg-teal-100 text-black ${activeMenuItem === 'trasabilitate' ? 'bg-teal-300 font-bold' : ''}`}>
+                  🔍 Trasabilitate
                 </button>
               </div>
             )}
