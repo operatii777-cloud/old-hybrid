@@ -29,6 +29,7 @@ import logisticaRoutes from './admin/logistica.js';
 import revenueScienceRoutes from './admin/revenue-science.js';
 import riskEngineRoutes from './admin/risk-engine.js';
 import financialControlRoutes from './admin/financial-control.js';
+import weatherRoutes from './admin/weather.js';
 
 export function setupRoutes(app) {
   // Auth
@@ -69,6 +70,7 @@ export function setupRoutes(app) {
   app.use('/api/revenue-science', revenueScienceRoutes);
   app.use('/api/risk-engine', riskEngineRoutes);
   app.use('/api/financial-control', financialControlRoutes);
+  app.use('/api/weather', weatherRoutes);
 
   // Not found
   app.use('/api/*', (req, res) => {
