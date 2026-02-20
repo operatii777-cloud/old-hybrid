@@ -26,6 +26,7 @@ import reservationsRoutes from './admin/reservations.js';
 import vouchersRoutes from './admin/vouchers.js';
 import stocAlerteRoutes from './admin/stoc-alerte.js';
 import logisticaRoutes from './admin/logistica.js';
+import revenueScienceRoutes from './admin/revenue-science.js';
 
 export function setupRoutes(app) {
   // Auth
@@ -63,6 +64,7 @@ export function setupRoutes(app) {
   app.use('/api/vouchers', vouchersRoutes);
   app.use('/api/stoc', stocAlerteRoutes);
   app.use('/api/logistica', logisticaRoutes);
+  app.use('/api/revenue-science', revenueScienceRoutes);
 
   // Not found
   app.use('/api/*', (req, res) => {
