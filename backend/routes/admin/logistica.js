@@ -7,9 +7,6 @@ import { detecteazaAlergeni, getAlergeniDetalii, getAlergeniReteta, ALERGENI_EU,
 const router = express.Router();
 const db = () => getDatabase();
 
-// Apply rate limiting to all logistica routes
-router.use(logisticaLimiter);
-
 const logisticaLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 120,
@@ -17,6 +14,9 @@ const logisticaLimiter = rateLimit({
   legacyHeaders: false,
   message: { ok: false, error: 'Prea multe cereri.' }
 });
+
+// Apply rate limiting to all logistica routes
+router.use(logisticaLimiter);
 
 // ===== ALERGENI =====
 
@@ -33,7 +33,7 @@ router.get('/alergeni-detectie', (req, res) => {
 });
 
 /** Alergeni per ingredient (materie primă) */
-router.get('/alergeni/:cod_material', logisticaLimiter, async (req, res) => {
+router.get('/alergeni/:cod_material', async (req, res) => {
   try {
     const rows = await db().all(
       'SELECT * FROM ingrediente_alergeni WHERE cod_material = ?',
@@ -47,7 +47,7 @@ router.get('/alergeni/:cod_material', logisticaLimiter, async (req, res) => {
 });
 
 /** Salvează alergenii unui ingredient (înlocuire completă) */
-router.post('/alergeni/:cod_material', logisticaLimiter, async (req, res) => {
+router.post('/alergeni/:cod_material', async (req, res) => {
   const { cod_material } = req.params;
   const { alergeni } = req.body;
   if (!Array.isArray(alergeni)) return res.status(400).json({ error: 'alergeni trebuie să fie array' });
@@ -74,7 +74,7 @@ router.get('/aditivi-comuni', (req, res) => {
 });
 
 /** Aditivi per ingredient */
-router.get('/aditivi/:cod_material', logisticaLimiter, async (req, res) => {
+router.get('/aditivi/:cod_material', async (req, res) => {
   try {
     const rows = await db().all(
       'SELECT * FROM ingrediente_aditivi WHERE cod_material = ?',
@@ -87,7 +87,7 @@ router.get('/aditivi/:cod_material', logisticaLimiter, async (req, res) => {
 });
 
 /** Salvează aditivii unui ingredient */
-router.post('/aditivi/:cod_material', logisticaLimiter, async (req, res) => {
+router.post('/aditivi/:cod_material', async (req, res) => {
   const { cod_material } = req.params;
   const { aditivi } = req.body;
   if (!Array.isArray(aditivi)) return res.status(400).json({ error: 'aditivi trebuie să fie array' });
@@ -108,7 +108,7 @@ router.post('/aditivi/:cod_material', logisticaLimiter, async (req, res) => {
 
 // ===== SUB-REȚETE =====
 
-router.get('/sub-retete', logisticaLimiter, async (req, res) => {
+router.get('/sub-retete', async (req, res) => {
   try {
     const rows = await db().all('SELECT * FROM sub_retete WHERE activ = 1 ORDER BY denumire');
     res.json(rows);
@@ -117,7 +117,7 @@ router.get('/sub-retete', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.get('/sub-retete/:cod', logisticaLimiter, async (req, res) => {
+router.get('/sub-retete/:cod', async (req, res) => {
   try {
     const header = await db().get('SELECT * FROM sub_retete WHERE cod_sub_ret = ?', [req.params.cod]);
     if (!header) return res.status(404).json({ error: 'Sub-rețetă negăsită' });
@@ -135,7 +135,7 @@ router.get('/sub-retete/:cod', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.post('/sub-retete', logisticaLimiter, async (req, res) => {
+router.post('/sub-retete', async (req, res) => {
   const { denumire, um, cantitate_rezultata, gestiune_id, nota } = req.body;
   if (!denumire) return res.status(400).json({ error: 'Denumirea este obligatorie' });
   try {
@@ -152,7 +152,7 @@ router.post('/sub-retete', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.put('/sub-retete/:cod', logisticaLimiter, async (req, res) => {
+router.put('/sub-retete/:cod', async (req, res) => {
   const { denumire, um, cantitate_rezultata, gestiune_id, nota } = req.body;
   try {
     await db().run(
@@ -165,7 +165,7 @@ router.put('/sub-retete/:cod', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.delete('/sub-retete/:cod', logisticaLimiter, async (req, res) => {
+router.delete('/sub-retete/:cod', async (req, res) => {
   try {
     await db().run('UPDATE sub_retete SET activ=0 WHERE cod_sub_ret=?', [req.params.cod]);
     res.json({ success: true });
@@ -174,7 +174,7 @@ router.delete('/sub-retete/:cod', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.post('/sub-retete/:cod/ingrediente', logisticaLimiter, async (req, res) => {
+router.post('/sub-retete/:cod/ingrediente', async (req, res) => {
   const { cod_mat, denumire, cant, um } = req.body;
   if (!cod_mat || !cant) return res.status(400).json({ error: 'cod_mat și cant sunt obligatorii' });
   try {
@@ -188,7 +188,7 @@ router.post('/sub-retete/:cod/ingrediente', logisticaLimiter, async (req, res) =
   }
 });
 
-router.delete('/sub-retete-ingrediente/:id', logisticaLimiter, async (req, res) => {
+router.delete('/sub-retete-ingrediente/:id', async (req, res) => {
   try {
     await db().run('DELETE FROM sub_retete_ingrediente WHERE id=?', [req.params.id]);
     res.json({ success: true });
@@ -199,7 +199,7 @@ router.delete('/sub-retete-ingrediente/:id', logisticaLimiter, async (req, res) 
 
 // ===== FIȘE TEHNICE =====
 
-router.get('/fise-tehnice', logisticaLimiter, async (req, res) => {
+router.get('/fise-tehnice', async (req, res) => {
   try {
     const rows = await db().all(
       `SELECT ft.*, p.den_prod
@@ -213,7 +213,7 @@ router.get('/fise-tehnice', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.get('/fise-tehnice/:cod_produs', logisticaLimiter, async (req, res) => {
+router.get('/fise-tehnice/:cod_produs', async (req, res) => {
   try {
     const fisa = await db().get('SELECT * FROM fise_tehnice WHERE cod_produs = ?', [req.params.cod_produs]);
     if (!fisa) return res.json(null);
@@ -238,7 +238,7 @@ router.get('/fise-tehnice/:cod_produs', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.post('/fise-tehnice', logisticaLimiter, async (req, res) => {
+router.post('/fise-tehnice', async (req, res) => {
   const { cod_produs, denumire_produs, descriere, mod_preparare, conditii_pastrare,
     temperatura_servire, termen_valabilitate, valoare_energetica_kcal,
     proteine_g, grasimi_g, carbohidrati_g, fibre_g, sare_g, portie_g, observatii } = req.body;
@@ -259,7 +259,7 @@ router.post('/fise-tehnice', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.delete('/fise-tehnice/:cod_produs', logisticaLimiter, async (req, res) => {
+router.delete('/fise-tehnice/:cod_produs', async (req, res) => {
   try {
     await db().run('DELETE FROM fise_tehnice WHERE cod_produs=?', [req.params.cod_produs]);
     res.json({ success: true });
@@ -270,7 +270,7 @@ router.delete('/fise-tehnice/:cod_produs', logisticaLimiter, async (req, res) =>
 
 // ===== HACCP =====
 
-router.get('/haccp-checklist', logisticaLimiter, async (req, res) => {
+router.get('/haccp-checklist', async (req, res) => {
   try {
     const rows = await db().all('SELECT * FROM haccp_checklist WHERE activ=1 ORDER BY categorie, id');
     res.json(rows);
@@ -279,7 +279,7 @@ router.get('/haccp-checklist', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.post('/haccp-checklist', logisticaLimiter, async (req, res) => {
+router.post('/haccp-checklist', async (req, res) => {
   const { categorie, punct_control, limita_critica, actiune_corectiva, frecventa, responsabil } = req.body;
   if (!categorie || !punct_control) return res.status(400).json({ error: 'categorie și punct_control sunt obligatorii' });
   try {
@@ -293,7 +293,7 @@ router.post('/haccp-checklist', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.put('/haccp-checklist/:id', logisticaLimiter, async (req, res) => {
+router.put('/haccp-checklist/:id', async (req, res) => {
   const { categorie, punct_control, limita_critica, actiune_corectiva, frecventa, responsabil, activ } = req.body;
   try {
     await db().run(
@@ -306,7 +306,7 @@ router.put('/haccp-checklist/:id', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.delete('/haccp-checklist/:id', logisticaLimiter, async (req, res) => {
+router.delete('/haccp-checklist/:id', async (req, res) => {
   try {
     await db().run('UPDATE haccp_checklist SET activ=0 WHERE id=?', [req.params.id]);
     res.json({ success: true });
@@ -316,7 +316,7 @@ router.delete('/haccp-checklist/:id', logisticaLimiter, async (req, res) => {
 });
 
 /** Înregistrări HACCP */
-router.get('/haccp-inregistrari', logisticaLimiter, async (req, res) => {
+router.get('/haccp-inregistrari', async (req, res) => {
   const { data } = req.query;
   try {
     let query = `SELECT hi.*, hc.categorie, hc.punct_control, hc.limita_critica
@@ -335,7 +335,7 @@ router.get('/haccp-inregistrari', logisticaLimiter, async (req, res) => {
   }
 });
 
-router.post('/haccp-inregistrari', logisticaLimiter, async (req, res) => {
+router.post('/haccp-inregistrari', async (req, res) => {
   const { checklist_id, valoare_masurata, conform, actiune_luata, operator, observatii } = req.body;
   if (!checklist_id) return res.status(400).json({ error: 'checklist_id este obligatoriu' });
   try {
@@ -351,7 +351,7 @@ router.post('/haccp-inregistrari', logisticaLimiter, async (req, res) => {
 
 // ===== TRASABILITATE =====
 
-router.get('/trasabilitate/:cod_material', logisticaLimiter, async (req, res) => {
+router.get('/trasabilitate/:cod_material', async (req, res) => {
   try {
     const miscare = await db().all(
       `SELECT t.*, mp.denumire as denumire_material, g.nume as gestiune_nume, f.denumire as furnizor_name
@@ -371,7 +371,7 @@ router.get('/trasabilitate/:cod_material', logisticaLimiter, async (req, res) =>
 });
 
 /** Unde este folosit un ingredient (în ce rețete) */
-router.get('/trasabilitate-retete/:cod_material', logisticaLimiter, async (req, res) => {
+router.get('/trasabilitate-retete/:cod_material', async (req, res) => {
   try {
     const retete = await db().all(
       `SELECT r.cod_ret, r.cant, r.um, r.gestiune_id, p.den_prod, p.dept, p.pret1
@@ -388,7 +388,7 @@ router.get('/trasabilitate-retete/:cod_material', logisticaLimiter, async (req, 
 });
 
 /** Înregistrare mișcare trasabilitate */
-router.post('/trasabilitate', logisticaLimiter, async (req, res) => {
+router.post('/trasabilitate', async (req, res) => {
   const { cod_material, tip_miscare, cantitate, um, sursa_id, sursa_tip, gestiune_id, lot, data_expirare, furnizor_id, nota, operator } = req.body;
   if (!cod_material || !tip_miscare || cantitate == null) {
     return res.status(400).json({ error: 'cod_material, tip_miscare și cantitate sunt obligatorii' });
@@ -408,7 +408,7 @@ router.post('/trasabilitate', logisticaLimiter, async (req, res) => {
 // ===== AUTO-COD INGREDIENT =====
 
 /** Generează un cod unic disponibil pentru un ingredient nou */
-router.get('/next-cod-ingredient', logisticaLimiter, async (req, res) => {
+router.get('/next-cod-ingredient', async (req, res) => {
   try {
     const row = await db().get('SELECT COALESCE(MAX(cod), 0) as max_cod FROM materii_prime');
     res.json({ next_cod: (row.max_cod || 0) + 1 });
@@ -419,7 +419,7 @@ router.get('/next-cod-ingredient', logisticaLimiter, async (req, res) => {
 
 // ===== CONVERTOR UNITĂȚI MĂSURĂ =====
 
-router.get('/um-conversie', logisticaLimiter, async (req, res) => {
+router.get('/um-conversie', async (req, res) => {
   try {
     const rows = await db().all('SELECT * FROM um_conversie ORDER BY um1');
     res.json(rows);
@@ -429,7 +429,7 @@ router.get('/um-conversie', logisticaLimiter, async (req, res) => {
 });
 
 /** Convertește o cantitate între două unități */
-router.get('/um-conversie/convert', logisticaLimiter, async (req, res) => {
+router.get('/um-conversie/convert', async (req, res) => {
   const { cantitate, um_din, um_spre } = req.query;
   if (!cantitate || !um_din || !um_spre) {
     return res.status(400).json({ error: 'cantitate, um_din și um_spre sunt obligatorii' });
