@@ -12,7 +12,7 @@ const WEATHER_EMOJI = {
   clouds: '⛅',
   rain: '🌧️',
   drizzle: '🌦️',
-  thunderstorm: '⛈️',
+  storm: '⛈️',
   snow: '🌨️',
   mist: '🌫️',
   wind: '🌬️',

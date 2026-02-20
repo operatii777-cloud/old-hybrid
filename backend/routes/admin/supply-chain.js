@@ -14,7 +14,7 @@ const demoSurplus = [
 ];
 
 const demoPriceVolatility = [
-  { ingredient: 'Ulei Floarea Soarelui', currentPrice: 12.50, previousPrice: 10.20, changePct: 22.5, trend: '↑', alertLevel: 'HIGH' },
+  { ingredient: 'Ulei Floarea-Soarelui', currentPrice: 12.50, previousPrice: 10.20, changePct: 22.5, trend: '↑', alertLevel: 'HIGH' },
   { ingredient: 'Ouă (30 buc)', currentPrice: 18.00, previousPrice: 17.50, changePct: 2.9, trend: '↑', alertLevel: 'LOW' },
   { ingredient: 'Carne Vită', currentPrice: 42.00, previousPrice: 45.00, changePct: -6.7, trend: '↓', alertLevel: 'LOW' },
   { ingredient: 'Făină Albă', currentPrice: 3.80, previousPrice: 3.20, changePct: 18.8, trend: '↑', alertLevel: 'HIGH' },

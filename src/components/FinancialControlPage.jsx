@@ -68,11 +68,11 @@ const FinancialControlPage = () => {
         food_cost_percent_today: 30.2,
         food_cost_target: 30.0,
         products: [
-          { produs: 'Ciorba de burta',     pret_vanzare: 22, cogs_target: 6.60,  cogs_actual: 6.85,  food_cost_percent: 31.1 },
-          { produs: 'Mici cu mustar',      pret_vanzare: 18, cogs_target: 5.40,  cogs_actual: 5.38,  food_cost_percent: 29.9 },
-          { produs: 'Sarmale cu mamaliga', pret_vanzare: 35, cogs_target: 9.80,  cogs_actual: 10.20, food_cost_percent: 29.1 },
-          { produs: 'Friptura de porc',    pret_vanzare: 48, cogs_target: 16.80, cogs_actual: 16.50, food_cost_percent: 34.4 },
-          { produs: 'Papanasi',            pret_vanzare: 19, cogs_target: 4.75,  cogs_actual: 4.80,  food_cost_percent: 25.3 },
+          { produs: 'Ciorba de burta',     pret_vanzare: 22, cogs_target: 6.60,  cogs_actual: 6.85,  food_cost_percent: parseFloat((6.85 / 22 * 100).toFixed(1)) },
+          { produs: 'Mici cu mustar',      pret_vanzare: 18, cogs_target: 5.40,  cogs_actual: 5.38,  food_cost_percent: parseFloat((5.38 / 18 * 100).toFixed(1)) },
+          { produs: 'Sarmale cu mamaliga', pret_vanzare: 35, cogs_target: 9.80,  cogs_actual: 10.20, food_cost_percent: parseFloat((10.20 / 35 * 100).toFixed(1)) },
+          { produs: 'Friptura de porc',    pret_vanzare: 48, cogs_target: 16.80, cogs_actual: 16.50, food_cost_percent: parseFloat((16.50 / 48 * 100).toFixed(1)) },
+          { produs: 'Papanasi',            pret_vanzare: 19, cogs_target: 4.75,  cogs_actual: 4.80,  food_cost_percent: parseFloat((4.80 / 19 * 100).toFixed(1)) },
         ]
       });
     }
