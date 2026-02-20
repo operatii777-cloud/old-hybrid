@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
 import { openai, AI_MODEL } from '../shared/openaiClient';
@@ -50,8 +50,9 @@ export async function addToSchema(
     await fs.copyFile(SCHEMA_PATH, backupPath);
     try {
       await fs.appendFile(SCHEMA_PATH, `\n\n${definition}\n`);
-      execSync('npx prisma migrate dev --name ' + migrationName, { stdio: 'pipe' });
-      execSync('npx prisma generate', { stdio: 'pipe' });
+      const safeName = migrationName.replace(/[^a-z0-9_]/gi, '_');
+      execFileSync('npx', ['prisma', 'migrate', 'dev', '--name', safeName], { stdio: 'pipe' });
+      execFileSync('npx', ['prisma', 'generate'], { stdio: 'pipe' });
       await fs.unlink(backupPath).catch(() => {});
       return { definition, migrationName, rollbackSql, applied: true, dryRun: false };
     } catch (err) {

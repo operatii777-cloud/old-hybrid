@@ -160,7 +160,8 @@ router.post('/import', upload.single('file'), async (req, res) => {
           ingredientId: m.matchedIngredient!.id, quantity: m.quantity, unit: m.unit,
         })),
         recipe.servings,
-        foodCostPct
+        foodCostPct,
+        recipe.ingredients.map(i => ({ name: i.name, quantity: i.quantity, unit: i.unit }))
       );
 
       if (!dryRun) {
