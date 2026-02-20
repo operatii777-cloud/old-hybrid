@@ -33,6 +33,10 @@ import weatherRoutes from './admin/weather.js';
 import laborAiRoutes from './admin/labor-ai.js';
 import darkKitchenRoutes from './admin/dark-kitchen.js';
 import hqWarRoomRoutes from './admin/hq-warroom.js';
+import supplyChainRoutes from './admin/supply-chain.js';
+import experienceEngineRoutes from './admin/experience-engine.js';
+import digitalIdentityRoutes from './admin/digital-identity.js';
+import paymentOrchestrationRoutes from './admin/payment-orchestration.js';
 
 export function setupRoutes(app) {
   // Auth
@@ -77,6 +81,10 @@ export function setupRoutes(app) {
   app.use('/api/labor-ai', laborAiRoutes);
   app.use('/api/dark-kitchen', darkKitchenRoutes);
   app.use('/api/hq-warroom', hqWarRoomRoutes);
+  app.use('/api/supply-chain', supplyChainRoutes);
+  app.use('/api/experience-engine', experienceEngineRoutes);
+  app.use('/api/digital-identity', digitalIdentityRoutes);
+  app.use('/api/payment-orchestration', paymentOrchestrationRoutes);
 
   // Not found
   app.use('/api/*', (req, res) => {
