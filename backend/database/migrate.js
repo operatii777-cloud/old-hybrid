@@ -3,11 +3,13 @@ import { logger } from '../utils/logger.js';
 import * as migration001 from './migrations/001_add_roles.js';
 import * as migration003 from './migrations/003_vouchers_kds.js';
 import * as migration005 from './migrations/005_logistics_features.js';
+import * as migration006 from './migrations/006_advanced_features.js';
 
 const migrations = [
-  { id: '001_add_roles', name: 'Add role-based access control', up: migration001.up, down: migration001.down },
-  { id: '003_vouchers_kds', name: 'Add vouchers, KDS and low-stock alerts', up: migration003.up, down: migration003.down },
-  { id: '005_logistics_features', name: 'Add logistics: allergens, sub-recipes, technical sheets, HACCP, traceability', up: migration005.up, down: migration005.down },
+  { id: '001_add_roles',          name: 'Add role-based access control',                                                             up: migration001.up, down: migration001.down },
+  { id: '003_vouchers_kds',       name: 'Add vouchers, KDS and low-stock alerts',                                                    up: migration003.up, down: migration003.down },
+  { id: '005_logistics_features', name: 'Add logistics: allergens, sub-recipes, technical sheets, HACCP, traceability',              up: migration005.up, down: migration005.down },
+  { id: '006_advanced_features',  name: 'Add advanced features: self-healing, franchise, API economy, global data network, superapp', up: migration006.up, down: migration006.down },
 ];
 
 /**
